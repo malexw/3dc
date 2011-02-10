@@ -1,0 +1,25 @@
+Compiling
+-------------------
+Run
+$ make
+
+The compiled binary will be created in a new bin/ directory.
+Successfully compiled on Ubuntu 10.10 32-bit with GCC 4.4.3.
+
+Usage
+-------------------
+$ ./3dc input_type input_file output_type output_file
+
+Where input_type and output_type is one of:
+"stl" or "stlb"
+
+Known Issues
+-------------------
+Reading and writing of binary STL files is handled in a way that is not
+platform-independant. This may cause issues on some systems. The application
+has been successfully tested on Ubuntu 10.10 32-bit.
+
+There is occasionally an issue with reading the correct number of triangles
+from a binary STL file. The file will still translate correctly, but a warning
+will be displayed during conversion.
+
