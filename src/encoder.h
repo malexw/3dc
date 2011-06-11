@@ -4,7 +4,7 @@
 #include "basetypes.h"
 #include "model.h"
 
-// Base encoder class that all encoders should extend
+// Base encoder class that all encoders should extend. Turns Models into files.
 class Encoder {
 
  public:

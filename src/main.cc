@@ -1,20 +1,16 @@
-#include <fstream>
 #include <iostream>
-#include <math.h>
-#include <stdio.h>
 #include <string>
-#include <vector>
 
 #include "decoder.h"
 #include "encoder.h"
 #include "fileblob.h"
 #include "model.h"
+#include "objdecoder.h"
+#include "objencoder.h"
 #include "stlbdecoder.h"
 #include "stlbencoder.h"
 #include "stldecoder.h"
 #include "stlencoder.h"
-#include "triangle.h"
-#include "vertex.h"
 
 //float byteArrayToFloat(const char * source, int len);
 void show_usage();
@@ -27,7 +23,9 @@ int main(int argc, char * argv[]) {
     Encoder::ShPtr e;
     FileBlob * b = new FileBlob(std::string(argv[2]));; 
     
-    if (std::string(argv[1]) == "stl") {
+    if (std::string(argv[1]) == "obj") {
+	  d.reset(new ObjDecoder());
+	} else if (std::string(argv[1]) == "stl") {
       d.reset(new StlDecoder());
     } else if (std::string(argv[1]) == "stlb") {
       d.reset(new StlbDecoder());
@@ -35,8 +33,10 @@ int main(int argc, char * argv[]) {
       show_usage();
       return 0;
     }
-
-    if (std::string(argv[3]) == "stl") {
+	
+	if (std::string(argv[3]) == "obj") {
+	  e.reset(new ObjEncoder());
+	} else if (std::string(argv[3]) == "stl") {
       e.reset(new StlEncoder());
     } else if (std::string(argv[3]) == "stlb") {
       e.reset(new StlbEncoder());

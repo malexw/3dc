@@ -8,7 +8,7 @@ Model::Model() {
 Model::~Model() {
 }
 
-int Model::triangle_count() {
+const int Model::triangle_count() const {
   return tris_.size();
 }
 

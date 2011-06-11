@@ -4,7 +4,7 @@
 #include "basetypes.h"
 #include "vertex.h"
 
-// Basic object for representing a triangle with normal
+// Basic object for representing geometry for a triangle, with normal
 class Triangle {
 
  public:

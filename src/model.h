@@ -7,7 +7,9 @@
 #include "vertex.h"
 #include "triangle.h"
 
-// A model is made of triangles
+/*
+ * A model is an internal representation of a 3D object.
+ */ 
 class Model {
 
  public:
@@ -15,8 +17,14 @@ class Model {
   
   Model();
   ~Model();
-  int triangle_count();
+  
+  // Returns the number of triangles that make up the object
+  const int triangle_count() const;
+  
+  // Returns a boost::shared_pointer to the triangle at index i
   Triangle::ShPtr get_triangle(int i);
+  
+  // Intended to be called by decoders to add geometry to the model as the triangles are decoded.
   void add_triangle(Triangle::ShPtr t);
 
  private:

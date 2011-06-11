@@ -7,7 +7,7 @@
 FileBlob::FileBlob(std::string path) 
       : file_path_ (path),
         file_size_ (0),
-	      bytes_ (NULL) {
+	    bytes_ (NULL) {
   Init();
 }
 

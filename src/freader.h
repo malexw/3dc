@@ -6,7 +6,9 @@
 
 #include "basetypes.h"
 
-// Reads a file from disk
+/*
+ *  Reads a file from disk
+ */
 class FileReader {
 
  public:

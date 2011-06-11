@@ -4,7 +4,7 @@
 #include "fileblob.h"
 #include "model.h"
 
-// Base decoder class that all decoders should extend
+// Base decoder class that all decoders should extend. Responsible for turning input files into Model objects.
 class Decoder {
 
  public:

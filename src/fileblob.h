@@ -5,7 +5,7 @@
 
 #include "basetypes.h"
 
-// A wrapper for the binary contents of a file
+// A wrapper for the binary contents of a file. Makes the bytes of a file available like an array.
 class FileBlob {
 
  public:
@@ -13,9 +13,6 @@ class FileBlob {
   explicit FileBlob(std::string path);
   ~FileBlob();
   const char& operator[](std::size_t position) { return bytes_[position]; }
-
-  void PrintFreqTable() const;
-  int GetFreqTable(int * out) const;
   int Size() const;
 
  private:
@@ -23,6 +20,8 @@ class FileBlob {
 
   std::string file_path_;
   int file_size_;
+  
+  // TODO: Change this to a boost::shared_array
   char * bytes_;
 
   DISALLOW_COPY_AND_ASSIGN(FileBlob);

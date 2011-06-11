@@ -4,14 +4,14 @@ Run
 $ make
 
 The compiled binary will be created in a new bin/ directory.
-Successfully compiled on Ubuntu 10.10 32-bit with GCC 4.4.3.
+Successfully compiled on Ubuntu 11.04 32-bit with GCC 4.4.3.
 
 Usage
 -------------------
 $ ./3dc input_type input_file output_type output_file
 
 Where input_type and output_type is one of:
-"stl" or "stlb"
+"stl", "stlb", or "obj"
 
 Known Issues
 -------------------
@@ -23,3 +23,4 @@ There is occasionally an issue with reading the correct number of triangles
 from a binary STL file. The file will still translate correctly, but a warning
 will be displayed during conversion.
 
+The OBJ parser does not currently support materials or textures.

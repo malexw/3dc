@@ -1,4 +1,5 @@
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <string>
 
@@ -50,7 +51,7 @@ void StlEncoder::WriteStlTriangle(std::ofstream& out, Triangle::ShPtr t) {
 // Writes the contents of a Vertex to the output stream
 void StlEncoder::WriteStlVertex(std::ofstream& out, Vertex::ShPtr v) {
   
-  out << v->x_ << " ";
-  out << v->y_ << " ";
-  out << v->z_ << "\r\n";
+  out << std::setprecision(15) << v->x_ << " ";
+  out << std::setprecision(15) << v->y_ << " ";
+  out << std::setprecision(15) << v->z_ << "\r\n";
 }

@@ -31,7 +31,7 @@ Model::ShPtr StlDecoder::decode(FileBlob& b) {
   Model::ShPtr model (new Model());
 
   std::vector<std::string> tokens = Tokenize(b, index);
-  
+    
   if (tokens[0].compare(header)) {
     std::cout << "Error: missing header" << std::endl;
     return model;
@@ -113,7 +113,7 @@ Model::ShPtr StlDecoder::decode(FileBlob& b) {
 }
 
 // Returns the index of the first non-whitespace character after offset
-unsigned int StlDecoder::next_index(FileBlob& b, int offset) {
+const unsigned int StlDecoder::next_index(FileBlob& b, int offset) {
   
   while (is_whitespace(b[offset])) {
     offset++;
@@ -123,7 +123,7 @@ unsigned int StlDecoder::next_index(FileBlob& b, int offset) {
 }
 
 // Returns the index of the first character following a group of newline characters after the offset
-unsigned int StlDecoder::newline_index(FileBlob& b, int offset) {
+const unsigned int StlDecoder::newline_index(FileBlob& b, int offset) {
   
   int ni = offset;
   
@@ -138,30 +138,29 @@ unsigned int StlDecoder::newline_index(FileBlob& b, int offset) {
 }
 
 // Returns true if c is a whitespace character
-bool StlDecoder::is_whitespace(char c) {
+const bool StlDecoder::is_whitespace(char c) {
   return (c == ' ') || (c == '\t') || (c == '\n') || (c == '\r');
 }
 
-// Returns a collection of whitespace-separated character strings occuring between offset and the end of the
-// line
+//
 std::vector<std::string> StlDecoder::Tokenize(FileBlob& b, int offset) {
   
   std::vector<std::string> tokens;
-  int start = next_index(b, offset);
-  int end = start;
-  int ni = newline_index(b, offset);
+  int startOfString = next_index(b, offset);
+  int endOfString = startOfString;
+  int endOfLine = newline_index(b, offset);
   
-  while (end < ni) {
-    while (!is_whitespace(b[end])) {
-      end++;
+  while (endOfString < endOfLine) {
+    while (!is_whitespace(b[endOfString])) {
+      endOfString++;
     }
     
     std::string str;
-    str.assign(&b[start], end-start);
+    str.assign(&b[startOfString], endOfString-startOfString);
     tokens.push_back(str);
     
-    start = next_index(b, end);
-    end = start;
+    startOfString = next_index(b, endOfString);
+    endOfString = startOfString;
   }
   
   return tokens;
