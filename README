@@ -1,5 +1,7 @@
 Compiling
 -------------------
+You need the Boost C++ Libraries. On Debian-based systems run `sudo apt-get install libboost-dev`.
+
 Run
 $ make
 
