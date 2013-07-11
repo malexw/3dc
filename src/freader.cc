@@ -17,14 +17,14 @@ FileReader::~FileReader() {
 const int FileReader::GetFileSize() {
   file_stream_.seekg(0, std::ios::end);
   int length = file_stream_.tellg();
-  file_stream_.seekg(std::ios::beg);
+  file_stream_.seekg(0, std::ios::beg);
   return length;
 }
 
 // Copy the contents of the file into the supplied buffer
 void FileReader::Read(char * buf, int fsize) {
-  file_stream_.seekg(std::ios::beg);
+  file_stream_.seekg(0, std::ios::beg);
   file_stream_.read(buf, fsize);
-  file_stream_.seekg(std::ios::beg);
+  file_stream_.seekg(0, std::ios::beg);
 }
 
