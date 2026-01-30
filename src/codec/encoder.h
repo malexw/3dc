@@ -8,7 +8,7 @@
 class Encoder {
 
  public:
-  typedef boost::shared_ptr<Encoder> ShPtr;
+  typedef std::shared_ptr<Encoder> ShPtr;
  
   virtual bool encode(Model& m, std::string output_path) = 0;
   

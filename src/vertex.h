@@ -1,14 +1,14 @@
 #ifndef TDC_VERTEX_H_
 #define TDC_VERTEX_H_
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "basetypes.h"
 
 // Basic object for representing a vertex in 3 dimensions
 class Vertex {
  public: 
-  typedef boost::shared_ptr<Vertex> ShPtr;
+  typedef std::shared_ptr<Vertex> ShPtr;
   
   float x_, y_, z_;
   

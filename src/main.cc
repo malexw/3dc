@@ -5,12 +5,12 @@
 #include "encoder.h"
 #include "fileblob.h"
 #include "model.h"
-#include "objdecoder.h"
-#include "objencoder.h"
-#include "stlbdecoder.h"
-#include "stlbencoder.h"
-#include "stldecoder.h"
-#include "stlencoder.h"
+#include "obj/objdecoder.h"
+#include "obj/objencoder.h"
+#include "stlb/stlbdecoder.h"
+#include "stlb/stlbencoder.h"
+#include "stl/stldecoder.h"
+#include "stl/stlencoder.h"
 
 //float byteArrayToFloat(const char * source, int len);
 void show_usage();

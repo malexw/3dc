@@ -8,7 +8,7 @@
 class Triangle {
 
  public:
-  typedef boost::shared_ptr<Triangle> ShPtr;
+  typedef std::shared_ptr<Triangle> ShPtr;
  
   Triangle(Vertex::ShPtr v1, Vertex::ShPtr v2, Vertex::ShPtr v3, Vertex::ShPtr normal);
   ~Triangle();

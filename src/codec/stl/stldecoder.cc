@@ -1,5 +1,5 @@
-#include <boost/lexical_cast.hpp>
 #include <iostream>
+#include <string>
 
 #include "stldecoder.h"
 #include "model.h"
@@ -44,9 +44,9 @@ Model::ShPtr StlDecoder::decode(FileBlob& b) {
     
     if (!(tokens[0].compare(facet))) {
       if (!(tokens[1].compare(normal))) {
-        float x = boost::lexical_cast<float>(tokens[2]);
-        float y = boost::lexical_cast<float>(tokens[3]);
-        float z = boost::lexical_cast<float>(tokens[4]);
+        float x = std::stof(tokens[2]);
+        float y = std::stof(tokens[3]);
+        float z = std::stof(tokens[4]);
         Vertex::ShPtr v (new Vertex(x, y, z));
         verts.push_back(v);
       } else {
@@ -71,9 +71,9 @@ Model::ShPtr StlDecoder::decode(FileBlob& b) {
       tokens = Tokenize(b, index);
       
       if (!(tokens[0].compare(vertex))) {
-        float x = boost::lexical_cast<float>(tokens[1]);
-        float y = boost::lexical_cast<float>(tokens[2]);
-        float z = boost::lexical_cast<float>(tokens[3]);
+        float x = std::stof(tokens[1]);
+        float y = std::stof(tokens[2]);
+        float z = std::stof(tokens[3]);
         Vertex::ShPtr v (new Vertex(x, y, z));
         verts.push_back(v);
       } else {

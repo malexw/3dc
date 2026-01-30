@@ -12,7 +12,7 @@
 class StlbDecoder : public Decoder {
 
  public:
-  typedef boost::shared_ptr<StlbDecoder> ShPtr;
+  typedef std::shared_ptr<StlbDecoder> ShPtr;
   
   StlbDecoder();
   ~StlbDecoder();

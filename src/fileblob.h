@@ -21,7 +21,6 @@ class FileBlob {
   std::string file_path_;
   int file_size_;
   
-  // TODO: Change this to a boost::shared_array
   char * bytes_;
 
   DISALLOW_COPY_AND_ASSIGN(FileBlob);

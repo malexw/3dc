@@ -1,3 +1,5 @@
+#include <cstdint>
+#include <cstring>
 #include <iostream>
 
 #include "stlbdecoder.h"
@@ -19,7 +21,7 @@ Model::ShPtr StlbDecoder::decode(FileBlob& b) {
   unsigned int i = 0, triangle_count = 0;
   for ( ; i < 4; ++i) {
     triangle_count <<= 8;
-    triangle_count += b[0x53-i];
+    triangle_count += static_cast<uint8_t>(b[0x53-i]);
   }
     
   for (i = 0x54; i < fsize; i += 0x32) {
@@ -43,12 +45,14 @@ Model::ShPtr StlbDecoder::decode(FileBlob& b) {
 }
 
 float StlbDecoder::btof(const char* start) {
-  
+
+  uint32_t bits =
+    (static_cast<uint8_t>(start[0]))       |
+    (static_cast<uint8_t>(start[1]) << 8)  |
+    (static_cast<uint8_t>(start[2]) << 16) |
+    (static_cast<uint8_t>(start[3]) << 24);
   float ret;
-  char * c = reinterpret_cast<char*> (&ret);
-  for (int i = 0; i < 4; ++i) {
-    c[i] = start[i];
-  }
-  
+  std::memcpy(&ret, &bits, sizeof(ret));
+
   return ret;
 }

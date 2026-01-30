@@ -13,7 +13,7 @@
 class Model {
 
  public:
-  typedef boost::shared_ptr<Model> ShPtr;
+  typedef std::shared_ptr<Model> ShPtr;
   
   Model();
   ~Model();
@@ -21,7 +21,7 @@ class Model {
   // Returns the number of triangles that make up the object
   const int triangle_count() const;
   
-  // Returns a boost::shared_pointer to the triangle at index i
+  // Returns a shared pointer to the triangle at index i
   Triangle::ShPtr get_triangle(int i);
   
   // Intended to be called by decoders to add geometry to the model as the triangles are decoded.

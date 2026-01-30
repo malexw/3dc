@@ -8,7 +8,7 @@
 class Decoder {
 
  public:
-  typedef boost::shared_ptr<Decoder> ShPtr;
+  typedef std::shared_ptr<Decoder> ShPtr;
  
   virtual Model::ShPtr decode(FileBlob& b) = 0;
 

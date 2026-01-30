@@ -12,7 +12,7 @@
 class ObjEncoder : public Encoder {
 
  public:
-  typedef boost::shared_ptr<ObjEncoder> ShPtr;
+  typedef std::shared_ptr<ObjEncoder> ShPtr;
  
   ObjEncoder();
   ~ObjEncoder();

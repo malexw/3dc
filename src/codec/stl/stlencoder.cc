@@ -17,7 +17,7 @@ StlEncoder::~StlEncoder() {
 bool StlEncoder::encode(Model& model, std::string output_path) {
   
   int triangle_count = model.triangle_count();
-  std::ofstream out(output_path.c_str(), std::ios::out | std::ios::app | std::ios::binary);
+  std::ofstream out(output_path.c_str(), std::ios::out | std::ios::binary);
   
   out << "solid output\r\n"; 
 

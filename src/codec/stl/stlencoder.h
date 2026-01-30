@@ -12,7 +12,7 @@
 class StlEncoder : public Encoder {
 
  public:
-  typedef boost::shared_ptr<StlEncoder> ShPtr;
+  typedef std::shared_ptr<StlEncoder> ShPtr;
  
   StlEncoder();
   ~StlEncoder();

@@ -1,6 +1,5 @@
-#include <boost/algorithm/string.hpp>
-#include <boost/lexical_cast.hpp>
 #include <iostream>
+#include <string>
 
 #include "objdecoder.h"
 #include "model.h"
@@ -31,24 +30,24 @@ Model::ShPtr ObjDecoder::decode(FileBlob& b) {
         // this line is a comment - skip it
       } else if (tokens[0] == "v") {
         // found a vertex
-        float x = boost::lexical_cast<float>(tokens[1]);
-        float y = boost::lexical_cast<float>(tokens[2]);
-        float z = boost::lexical_cast<float>(tokens[3]);
+        float x = std::stof(tokens[1]);
+        float y = std::stof(tokens[2]);
+        float z = std::stof(tokens[3]);
         Vertex::ShPtr v (new Vertex(x, y, z));
         verts.push_back(v);
       } else if (tokens[0] == "vn") {
         // found a normal
-        float x = boost::lexical_cast<float>(tokens[1]);
-        float y = boost::lexical_cast<float>(tokens[2]);
-        float z = boost::lexical_cast<float>(tokens[3]);
+        float x = std::stof(tokens[1]);
+        float y = std::stof(tokens[2]);
+        float z = std::stof(tokens[3]);
         Vertex::ShPtr n (new Vertex(x, y, z));
         norms.push_back(n);
       } else if (tokens[0] == "f") {
         // -1 to each of these because OBJ uses 1-based indexing
-        int x = boost::lexical_cast<int>(tokens[1]) - 1;
-        int y = boost::lexical_cast<int>(tokens[4]) - 1;
-        int z = boost::lexical_cast<int>(tokens[7]) - 1;
-        int n = boost::lexical_cast<int>(tokens[9]) - 1;
+        int x = std::stoi(tokens[1]) - 1;
+        int y = std::stoi(tokens[4]) - 1;
+        int z = std::stoi(tokens[7]) - 1;
+        int n = std::stoi(tokens[9]) - 1;
         //std::cout << x << " " << y << " " << z << " " << n << std::endl;
         Triangle::ShPtr t (new Triangle(verts[x], verts[y], verts[z], norms[n]));
         model->add_triangle(t);
@@ -97,6 +96,18 @@ std::vector<std::string> ObjDecoder::Tokenize(FileBlob& b, int offset) {
 
   std::string line;
   line.assign(&b[offset], &b[newline_index(b, offset)]);
-  boost::split(tokens, line, boost::is_any_of("\t /\r\n"));
+
+  const std::string delimiters = "\t /\r\n";
+  std::string::size_type pos = 0;
+  while (pos != std::string::npos) {
+    std::string::size_type end = line.find_first_of(delimiters, pos);
+    if (end == std::string::npos) {
+      tokens.push_back(line.substr(pos));
+      break;
+    }
+    tokens.push_back(line.substr(pos, end - pos));
+    pos = end + 1;
+  }
+
   return tokens;
 }
