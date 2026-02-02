@@ -3,26 +3,26 @@
 
 #include <vector>
 
-#include "basetypes.h"
 #include "encoder.h"
-#include "fileblob.h"
-#include "model.h"
+#include "mesh.h"
 
-// Writes the contents of a Model to a binary STL file
+// Writes the contents of a Scene to ASCII STL files
 class StlEncoder : public Encoder {
 
  public:
   typedef std::shared_ptr<StlEncoder> ShPtr;
- 
+
   StlEncoder();
   ~StlEncoder();
-  bool encode(Model& m, std::string output_path);
+  bool encode(const Scene& scene, const std::filesystem::path& output_path) override;
 
  private:
+  bool encode_mesh(const Mesh& m, const std::filesystem::path& output_path);
   void WriteStlTriangle(std::ofstream& out, Triangle::ShPtr t);
-  void WriteStlVertex(std::ofstream& out, Vertex::ShPtr v);
-   
-  DISALLOW_COPY_AND_ASSIGN(StlEncoder);
+  void WriteStlVertex(std::ofstream& out, Vec3f::ShPtr v);
+
+  StlEncoder(const StlEncoder&) = delete;
+  StlEncoder& operator=(const StlEncoder&) = delete;
 };
 
 #endif

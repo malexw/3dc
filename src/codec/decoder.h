@@ -1,16 +1,18 @@
 #ifndef TDC_DECODER_H_
 #define TDC_DECODER_H_
 
-#include "fileblob.h"
-#include "model.h"
+#include <vector>
 
-// Base decoder class that all decoders should extend. Responsible for turning input files into Model objects.
+#include "scene.h"
+
+// Base decoder class that all decoders should extend. Responsible for turning input files into Scene objects.
 class Decoder {
 
  public:
   typedef std::shared_ptr<Decoder> ShPtr;
- 
-  virtual Model::ShPtr decode(FileBlob& b) = 0;
+
+  virtual ~Decoder() {}
+  virtual Scene::ShPtr decode(const std::vector<char>& b) = 0;
 
 };
 

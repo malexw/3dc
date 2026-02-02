@@ -3,25 +3,24 @@
 
 #include <vector>
 
-#include "basetypes.h"
 #include "decoder.h"
-#include "fileblob.h"
-#include "model.h"
+#include "scene.h"
 
 // Decoder class for reading binary STL files
 class StlbDecoder : public Decoder {
 
  public:
   typedef std::shared_ptr<StlbDecoder> ShPtr;
-  
+
   StlbDecoder();
   ~StlbDecoder();
-  Model::ShPtr decode(FileBlob& b);
+  Scene::ShPtr decode(const std::vector<char>& b) override;
 
  private:
   float btof(const char* start);
-  
-  DISALLOW_COPY_AND_ASSIGN(StlbDecoder);
+
+  StlbDecoder(const StlbDecoder&) = delete;
+  StlbDecoder& operator=(const StlbDecoder&) = delete;
 };
 
 #endif

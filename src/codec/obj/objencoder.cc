@@ -3,9 +3,11 @@
 #include <string>
 
 #include "objencoder.h"
-#include "model.h"
+#include "mesh.h"
+#include "node.h"
+#include "scene.h"
 #include "triangle.h"
-#include "vertex.h"
+#include "vec3f.h"
 
 ObjEncoder::ObjEncoder() {
 }
@@ -13,24 +15,44 @@ ObjEncoder::ObjEncoder() {
 ObjEncoder::~ObjEncoder() {
 }
 
-/*
- * This is absolutely the stupidest way of writing an OBJ that could possibly work. Will come back and change
- * to minimize file size later
- */
-bool ObjEncoder::encode(Model& model, std::string output_path) {
+bool ObjEncoder::encode(const Scene& scene, const std::filesystem::path& output_path) {
 
-  int triangle_count = model.triangle_count();
-  std::ofstream out(output_path.c_str(), std::ios::out | std::ios::binary);
+  auto count = scene.node_count();
 
-  out << "# Exported to OBJ by 3dc\n";
-  out << "# github.com/malexw/3dc\n";
-
-  for (int i = 0; i < triangle_count; ++i) {
-    WriteVerticies(out, model.get_triangle(i));
+  if (count == 1) {
+    auto mesh = scene.get_node(0)->mesh();
+    if (mesh) {
+      return encode_mesh(*mesh, output_path);
+    }
+    return false;
   }
 
-  for (int i = 0; i < triangle_count; ++i) {
-    WriteNormal(out, (model.get_triangle(i))->norm_);
+  for (int i = 0; i < count; ++i) {
+    auto mesh = scene.get_node(i)->mesh();
+    if (mesh) {
+      auto path = output_path.parent_path()
+        / (output_path.stem().string() + "_" + std::to_string(i)
+           + output_path.extension().string());
+      if (!encode_mesh(*mesh, path)) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
+bool ObjEncoder::encode_mesh(const Mesh& mesh, const std::filesystem::path& output_path) {
+
+  auto triangle_count = mesh.triangle_count();
+  std::ofstream out(output_path, std::ios::out | std::ios::binary);
+
+  for (const auto& tri : mesh.triangles()) {
+    WriteVerticies(out, tri);
+  }
+
+  for (const auto& tri : mesh.triangles()) {
+    WriteNormal(out, tri->norm_);
   }
 
   for (int i = 0; i < triangle_count; ++i) {
@@ -46,25 +68,25 @@ bool ObjEncoder::encode(Model& model, std::string output_path) {
 void ObjEncoder::WriteVerticies(std::ofstream& out, Triangle::ShPtr t) {
 
   out << "v ";
-  out << t->v1_->x_ << " ";
-  out << t->v1_->y_ << " ";
-  out << t->v1_->z_ << "\n";
+  out << t->v1_->x << " ";
+  out << t->v1_->y << " ";
+  out << t->v1_->z << "\n";
   out << "v ";
-  out << t->v2_->x_ << " ";
-  out << t->v2_->y_ << " ";
-  out << t->v2_->z_ << "\n";
+  out << t->v2_->x << " ";
+  out << t->v2_->y << " ";
+  out << t->v2_->z << "\n";
   out << "v ";
-  out << t->v3_->x_ << " ";
-  out << t->v3_->y_ << " ";
-  out << t->v3_->z_ << "\n";
+  out << t->v3_->x << " ";
+  out << t->v3_->y << " ";
+  out << t->v3_->z << "\n";
 }
 
-void ObjEncoder::WriteNormal(std::ofstream& out, Vertex::ShPtr n) {
+void ObjEncoder::WriteNormal(std::ofstream& out, Vec3f::ShPtr n) {
 
   out << "vn ";
-  out << n->x_ << " ";
-  out << n->y_ << " ";
-  out << n->z_ << "\n";
+  out << n->x << " ";
+  out << n->y << " ";
+  out << n->z << "\n";
 }
 
 void ObjEncoder::WriteFace(std::ofstream& out, int i) {

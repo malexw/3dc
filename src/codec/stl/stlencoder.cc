@@ -4,9 +4,11 @@
 #include <string>
 
 #include "stlencoder.h"
-#include "model.h"
+#include "mesh.h"
+#include "node.h"
+#include "scene.h"
 #include "triangle.h"
-#include "vertex.h"
+#include "vec3f.h"
 
 StlEncoder::StlEncoder() {
 }
@@ -14,21 +16,47 @@ StlEncoder::StlEncoder() {
 StlEncoder::~StlEncoder() {
 }
 
-bool StlEncoder::encode(Model& model, std::string output_path) {
-  
-  int triangle_count = model.triangle_count();
-  std::ofstream out(output_path.c_str(), std::ios::out | std::ios::binary);
-  
-  out << "solid output\r\n"; 
+bool StlEncoder::encode(const Scene& scene, const std::filesystem::path& output_path) {
 
-  for (int i = 0; i < triangle_count; ++i) {
-    WriteStlTriangle(out, model.get_triangle(i));
+  auto count = scene.node_count();
+
+  if (count == 1) {
+    auto mesh = scene.get_node(0)->mesh();
+    if (mesh) {
+      return encode_mesh(*mesh, output_path);
+    }
+    return false;
   }
-  
+
+  for (int i = 0; i < count; ++i) {
+    auto mesh = scene.get_node(i)->mesh();
+    if (mesh) {
+      auto path = output_path.parent_path()
+        / (output_path.stem().string() + "_" + std::to_string(i)
+           + output_path.extension().string());
+      if (!encode_mesh(*mesh, path)) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
+bool StlEncoder::encode_mesh(const Mesh& mesh, const std::filesystem::path& output_path) {
+
+  std::ofstream out(output_path, std::ios::out | std::ios::binary);
+
+  out << "solid output\r\n";
+
+  for (const auto& tri : mesh.triangles()) {
+    WriteStlTriangle(out, tri);
+  }
+
   out << "endsolid output\r\n";
-  
+
   out.close();
-  
+
   return true;
 }
 
@@ -48,10 +76,10 @@ void StlEncoder::WriteStlTriangle(std::ofstream& out, Triangle::ShPtr t) {
   out << "endfacet\r\n";
 }
 
-// Writes the contents of a Vertex to the output stream
-void StlEncoder::WriteStlVertex(std::ofstream& out, Vertex::ShPtr v) {
-  
-  out << std::setprecision(15) << v->x_ << " ";
-  out << std::setprecision(15) << v->y_ << " ";
-  out << std::setprecision(15) << v->z_ << "\r\n";
+// Writes the contents of a Vec3f to the output stream
+void StlEncoder::WriteStlVertex(std::ofstream& out, Vec3f::ShPtr v) {
+
+  out << std::setprecision(15) << v->x << " ";
+  out << std::setprecision(15) << v->y << " ";
+  out << std::setprecision(15) << v->z << "\r\n";
 }

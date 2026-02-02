@@ -1,23 +1,21 @@
 #ifndef TDC_TRIANGLE_H_
 #define TDC_TRIANGLE_H_
 
-#include "basetypes.h"
-#include "vertex.h"
+#include "vec3f.h"
 
 // Basic object for representing geometry for a triangle, with normal
 class Triangle {
 
  public:
   typedef std::shared_ptr<Triangle> ShPtr;
- 
-  Triangle(Vertex::ShPtr v1, Vertex::ShPtr v2, Vertex::ShPtr v3, Vertex::ShPtr normal);
+
+  Triangle(Vec3f::ShPtr v1, Vec3f::ShPtr v2, Vec3f::ShPtr v3, Vec3f::ShPtr normal);
   ~Triangle();
-  Vertex::ShPtr v1_, v2_, v3_;
-  Vertex::ShPtr norm_;
+  Vec3f::ShPtr v1_, v2_, v3_;
+  Vec3f::ShPtr norm_;
 
- private:
-
-  DISALLOW_COPY_AND_ASSIGN(Triangle);
+  Triangle(const Triangle&) = delete;
+  Triangle& operator=(const Triangle&) = delete;
 };
 
 #endif

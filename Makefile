@@ -1,6 +1,6 @@
 NAME=3dc
 CXX ?= c++
-CXXFLAGS ?= -g -Wall -std=c++11
+CXXFLAGS ?= -g -Wall -std=c++17
 CXXFLAGS += -I$(SRCDIR) -I$(SRCDIR)/codec
 SRCDIR=src
 BINDIR=bin

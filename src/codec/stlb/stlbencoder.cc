@@ -6,9 +6,11 @@
 
 #include "encoder.h"
 #include "stlbencoder.h"
-#include "model.h"
+#include "mesh.h"
+#include "node.h"
+#include "scene.h"
 #include "triangle.h"
-#include "vertex.h"
+#include "vec3f.h"
 
 static void write_uint32_le(std::ofstream& out, uint32_t value) {
   char bytes[4];
@@ -31,24 +33,51 @@ StlbEncoder::StlbEncoder() {
 StlbEncoder::~StlbEncoder() {
 }
 
-bool StlbEncoder::encode(Model& model, std::string output_path) {
-  
-  std::ofstream out(output_path.c_str(), std::ios::out | std::ios::binary);
+bool StlbEncoder::encode(const Scene& scene, const std::filesystem::path& output_path) {
+
+  auto count = scene.node_count();
+
+  if (count == 1) {
+    auto mesh = scene.get_node(0)->mesh();
+    if (mesh) {
+      return encode_mesh(*mesh, output_path);
+    }
+    return false;
+  }
+
+  for (int i = 0; i < count; ++i) {
+    auto mesh = scene.get_node(i)->mesh();
+    if (mesh) {
+      auto path = output_path.parent_path()
+        / (output_path.stem().string() + "_" + std::to_string(i)
+           + output_path.extension().string());
+      if (!encode_mesh(*mesh, path)) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
+bool StlbEncoder::encode_mesh(const Mesh& mesh, const std::filesystem::path& output_path) {
+
+  std::ofstream out(output_path, std::ios::out | std::ios::binary);
   for (int i = 0; i < 0x50; ++i) {
     out << '\0';
   }
-  
-  int triangle_count = model.triangle_count();
+
+  auto triangle_count = mesh.triangle_count();
 
   if (triangle_count > 0) {
     write_uint32_le(out, triangle_count);
-    
-    for (int i = 0; i < triangle_count; ++i) {
-      WriteStlbTriangle(out, model.get_triangle(i));
+
+    for (const auto& tri : mesh.triangles()) {
+      WriteStlbTriangle(out, tri);
     }
     out.close();
   }
-  
+
   return true;
 }
 
@@ -62,9 +91,9 @@ void StlbEncoder::WriteStlbTriangle(std::ofstream& out, Triangle::ShPtr t) {
     out << "  ";
 }
 
-// Writes the contents of a Vertex to the output stream in IEEE 754 floating point number format
-void StlbEncoder::WriteStlbVertex(std::ofstream& out, Vertex::ShPtr v) {
-  write_float_le(out, v->x_);
-  write_float_le(out, v->y_);
-  write_float_le(out, v->z_);
+// Writes the contents of a Vec3f to the output stream in IEEE 754 floating point number format
+void StlbEncoder::WriteStlbVertex(std::ofstream& out, Vec3f::ShPtr v) {
+  write_float_le(out, v->x);
+  write_float_le(out, v->y);
+  write_float_le(out, v->z);
 }
