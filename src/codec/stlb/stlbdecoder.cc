@@ -6,7 +6,6 @@
 #include "mesh.h"
 #include "node.h"
 #include "scene.h"
-#include "triangle.h"
 #include "vec3f.h"
 
 StlbDecoder::StlbDecoder() {
@@ -26,17 +25,33 @@ Scene::ShPtr StlbDecoder::decode(const std::vector<char>& b) {
     triangle_count += static_cast<uint8_t>(b[0x53-i]);
   }
 
-  for (i = 0x54; i < fsize; i += 0x32) {
-    auto normal = std::make_shared<Vec3f>(btof(&b[i]), btof(&b[i+0x4]), btof(&b[i+0x8]));
-    auto v1 = std::make_shared<Vec3f>(btof(&b[i+0xC]), btof(&b[i+0x10]), btof(&b[i+0x14]));
-    auto v2 = std::make_shared<Vec3f>(btof(&b[i+0x18]), btof(&b[i+0x1C]), btof(&b[i+0x20]));
-    auto v3 = std::make_shared<Vec3f>(btof(&b[i+0x24]), btof(&b[i+0x28]), btof(&b[i+0x2C]));
+  std::vector<Vec3f> positions;
+  std::vector<Vec3f> normals;
+  uint32_t vert_index = 0;
 
-    auto tri = std::make_shared<Triangle>(v1, v2, v3, normal);
-    mesh->add_triangle(tri);
+  for (i = 0x54; i < fsize; i += 0x32) {
+    Vec3f normal(btof(&b[i]), btof(&b[i+0x4]), btof(&b[i+0x8]));
+    Vec3f v1(btof(&b[i+0xC]), btof(&b[i+0x10]), btof(&b[i+0x14]));
+    Vec3f v2(btof(&b[i+0x18]), btof(&b[i+0x1C]), btof(&b[i+0x20]));
+    Vec3f v3(btof(&b[i+0x24]), btof(&b[i+0x28]), btof(&b[i+0x2C]));
+
+    positions.push_back(v1);
+    positions.push_back(v2);
+    positions.push_back(v3);
+
+    // Expand face normal to per-vertex
+    normals.push_back(normal);
+    normals.push_back(normal);
+    normals.push_back(normal);
+
+    mesh->add_triangle(vert_index, vert_index + 1, vert_index + 2);
+    vert_index += 3;
   }
 
-  if (triangle_count == mesh->triangle_count() ) {
+  mesh->set_positions(std::move(positions));
+  mesh->set_normals(std::move(normals));
+
+  if (triangle_count == mesh->triangle_count()) {
     std::cout << "Read " << triangle_count << " triangles" << std::endl;
   } else {
     std::cout << "Error: triangle count mismatch. Expected " << triangle_count;

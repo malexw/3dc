@@ -18,9 +18,6 @@ class ObjEncoder : public Encoder {
 
  private:
   bool encode_mesh(const Mesh& m, const std::filesystem::path& output_path);
-  void WriteVerticies(std::ofstream& out, Triangle::ShPtr t);
-  void WriteNormal(std::ofstream& out, Vec3f::ShPtr v);
-  void WriteFace(std::ofstream& out, int i);
 
   ObjEncoder(const ObjEncoder&) = delete;
   ObjEncoder& operator=(const ObjEncoder&) = delete;

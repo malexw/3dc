@@ -6,8 +6,8 @@
 #include "mesh.h"
 #include "node.h"
 #include "scene.h"
-#include "triangle.h"
 #include "vec3f.h"
+#include "vertex_attribute.h"
 
 ObjEncoder::ObjEncoder() {
 }
@@ -44,55 +44,51 @@ bool ObjEncoder::encode(const Scene& scene, const std::filesystem::path& output_
 
 bool ObjEncoder::encode_mesh(const Mesh& mesh, const std::filesystem::path& output_path) {
 
-  auto triangle_count = mesh.triangle_count();
   std::ofstream out(output_path, std::ios::out | std::ios::binary);
 
-  for (const auto& tri : mesh.triangles()) {
-    WriteVerticies(out, tri);
+  bool has_normals = mesh.has_attribute(VertexAttribute::Normal);
+  bool has_texcoords = mesh.has_attribute(VertexAttribute::TexCoord0);
+
+  // Write positions
+  for (const auto& p : mesh.positions()) {
+    out << "v " << p.x << " " << p.y << " " << p.z << "\n";
   }
 
-  for (const auto& tri : mesh.triangles()) {
-    WriteNormal(out, tri->norm_);
+  // Write texture coordinates
+  if (has_texcoords) {
+    for (const auto& t : mesh.texcoords0()) {
+      out << "vt " << t.x << " " << t.y << "\n";
+    }
   }
 
-  for (int i = 0; i < triangle_count; ++i) {
-    WriteFace(out, i);
+  // Write normals
+  if (has_normals) {
+    for (const auto& n : mesh.normals()) {
+      out << "vn " << n.x << " " << n.y << " " << n.z << "\n";
+    }
+  }
+
+  // Write faces with appropriate format based on which attributes are present
+  for (const auto& tri : mesh.triangles()) {
+    out << "f";
+    for (int i = 0; i < 3; ++i) {
+      // OBJ uses 1-based indexing
+      uint32_t vi = tri[i] + 1;
+      out << " ";
+      if (has_normals && has_texcoords) {
+        out << vi << "/" << vi << "/" << vi;
+      } else if (has_normals) {
+        out << vi << "//" << vi;
+      } else if (has_texcoords) {
+        out << vi << "/" << vi;
+      } else {
+        out << vi;
+      }
+    }
+    out << "\n";
   }
 
   out.close();
 
   return true;
-}
-
-// Writes all the verticies for a triangle
-void ObjEncoder::WriteVerticies(std::ofstream& out, Triangle::ShPtr t) {
-
-  out << "v ";
-  out << t->v1_->x << " ";
-  out << t->v1_->y << " ";
-  out << t->v1_->z << "\n";
-  out << "v ";
-  out << t->v2_->x << " ";
-  out << t->v2_->y << " ";
-  out << t->v2_->z << "\n";
-  out << "v ";
-  out << t->v3_->x << " ";
-  out << t->v3_->y << " ";
-  out << t->v3_->z << "\n";
-}
-
-void ObjEncoder::WriteNormal(std::ofstream& out, Vec3f::ShPtr n) {
-
-  out << "vn ";
-  out << n->x << " ";
-  out << n->y << " ";
-  out << n->z << "\n";
-}
-
-void ObjEncoder::WriteFace(std::ofstream& out, int i) {
-
-  out << "f ";
-  out << (i*3)+1 << "//" << i+1 << " ";
-  out << (i*3)+2 << "//" << i+1 << " ";
-  out << (i*3)+3 << "//" << i+1 << "\n";
 }

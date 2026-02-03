@@ -17,8 +17,6 @@ class ObjDecoder : public Decoder {
   Scene::ShPtr decode(const std::vector<char>& b) override;
 
  private:
-  // Returns the index of the first non-whitespace character after offset
-  unsigned int next_index(const std::vector<char>& b, int offset);
   // Returns the index of the first character following a group of newline characters after the offset
   unsigned int newline_index(const std::vector<char>& b, int offset);
   // Returns true if c is a whitespace character

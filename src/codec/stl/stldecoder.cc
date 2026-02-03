@@ -1,3 +1,4 @@
+#include <cstdint>
 #include <iostream>
 #include <string>
 
@@ -5,7 +6,6 @@
 #include "mesh.h"
 #include "node.h"
 #include "scene.h"
-#include "triangle.h"
 #include "vec3f.h"
 
 StlDecoder::StlDecoder() {
@@ -27,9 +27,11 @@ Scene::ShPtr StlDecoder::decode(const std::vector<char>& b) {
   std::string endsolid = "endsolid";
 
   int index = 0;
-  int triangles = 0;
+  uint32_t vert_index = 0;
 
-  std::vector<Vec3f::ShPtr> verts;
+  std::vector<Vec3f> positions;
+  std::vector<Vec3f> normals;
+
   auto mesh = std::make_shared<Mesh>();
   auto node = std::make_shared<Node>();
   node->set_mesh(mesh);
@@ -48,13 +50,14 @@ Scene::ShPtr StlDecoder::decode(const std::vector<char>& b) {
 
   while (tokens[0].compare(endsolid)) {
 
+    Vec3f face_normal(0, 0, 0);
+
     if (!(tokens[0].compare(facet))) {
       if (!(tokens[1].compare(normal))) {
         auto x = std::stof(tokens[2]);
         auto y = std::stof(tokens[3]);
         auto z = std::stof(tokens[4]);
-        auto v = std::make_shared<Vec3f>(x, y, z);
-        verts.push_back(v);
+        face_normal = Vec3f(x, y, z);
       } else {
         std::cout << "Error: missing 'normal'" << std::endl;
         return scene;
@@ -80,8 +83,9 @@ Scene::ShPtr StlDecoder::decode(const std::vector<char>& b) {
         auto x = std::stof(tokens[1]);
         auto y = std::stof(tokens[2]);
         auto z = std::stof(tokens[3]);
-        auto v = std::make_shared<Vec3f>(x, y, z);
-        verts.push_back(v);
+        positions.emplace_back(x, y, z);
+        // Each vertex gets the face normal
+        normals.push_back(face_normal);
       } else {
         std::cout << "Error: missing 'vertex'" << std::endl;
         return scene;
@@ -104,16 +108,18 @@ Scene::ShPtr StlDecoder::decode(const std::vector<char>& b) {
       return scene;
     }
 
-    auto t = std::make_shared<Triangle>(verts[1], verts[2], verts[3], verts[0]);
-    mesh->add_triangle(t);
-    triangles++;
-    verts.clear();
+    // Sequential indices: (0,1,2), (3,4,5), ...
+    mesh->add_triangle(vert_index, vert_index + 1, vert_index + 2);
+    vert_index += 3;
 
     index = newline_index(b, index+1);
     tokens = Tokenize(b, index);
   }
 
-  std::cout << "Read " << triangles << " triangles" << std::endl;
+  mesh->set_positions(std::move(positions));
+  mesh->set_normals(std::move(normals));
+
+  std::cout << "Read " << mesh->triangle_count() << " triangles" << std::endl;
 
   return scene;
 }

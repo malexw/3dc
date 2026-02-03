@@ -18,8 +18,6 @@ class StlbEncoder : public Encoder {
 
  private:
   bool encode_mesh(const Mesh& m, const std::filesystem::path& output_path);
-  void WriteStlbTriangle(std::ofstream& out, Triangle::ShPtr t);
-  void WriteStlbVertex(std::ofstream& out, Vec3f::ShPtr v);
 
   StlbEncoder(const StlbEncoder&) = delete;
   StlbEncoder& operator=(const StlbEncoder&) = delete;

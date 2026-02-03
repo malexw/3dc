@@ -1,44 +1,58 @@
 #ifndef TDC_MESH_H_
 #define TDC_MESH_H_
 
+#include <array>
+#include <cstdint>
+#include <memory>
 #include <string>
 #include <vector>
 
+#include "vec2f.h"
 #include "vec3f.h"
-#include "triangle.h"
+#include "vertex_attribute.h"
 
 /*
  * A mesh is an internal representation of a 3D object's geometry.
+ * Uses an indexed vertex model with typed attribute arrays.
  */
 class Mesh {
 
  public:
   typedef std::shared_ptr<Mesh> ShPtr;
 
-  Mesh();
-  ~Mesh();
+  // Query which attributes are present (checks if vector is non-empty)
+  bool has_attribute(VertexAttribute attr) const;
 
+  // Vertex count (length of positions array)
+  uint32_t vertex_count() const;
+
+  // Positions — required
+  const std::vector<Vec3f>& positions() const;
+  void set_positions(std::vector<Vec3f> positions);
+
+  // Normals — optional
+  const std::vector<Vec3f>& normals() const;
+  void set_normals(std::vector<Vec3f> normals);
+
+  // Texture coordinates — optional
+  const std::vector<Vec2f>& texcoords0() const;
+  void set_texcoords0(std::vector<Vec2f> texcoords);
+
+  // Triangle indices
+  uint32_t triangle_count() const;
+  const std::vector<std::array<uint32_t, 3>>& triangles() const;
+  void add_triangle(uint32_t v0, uint32_t v1, uint32_t v2);
+
+  // Name
   const std::string& name() const;
   void set_name(const std::string& name);
 
-  // Returns the number of triangles that make up the object
-  const int triangle_count() const;
-
-  // Returns a shared pointer to the triangle at index i
-  Triangle::ShPtr get_triangle(int i) const;
-
-  // Returns a const reference to the triangle vector for iteration
-  const std::vector<Triangle::ShPtr>& triangles() const;
-
-  // Intended to be called by decoders to add geometry to the mesh as the triangles are decoded.
-  void add_triangle(Triangle::ShPtr t);
-
  private:
   std::string name_;
-  std::vector<Triangle::ShPtr> tris_;
-
-  Mesh(const Mesh&) = delete;
-  Mesh& operator=(const Mesh&) = delete;
+  std::vector<Vec3f> positions_;
+  std::vector<Vec3f> normals_;
+  std::vector<Vec2f> texcoords0_;
+  std::vector<std::array<uint32_t, 3>> triangles_;
 };
 
 #endif

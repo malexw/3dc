@@ -7,8 +7,8 @@
 #include "mesh.h"
 #include "node.h"
 #include "scene.h"
-#include "triangle.h"
 #include "vec3f.h"
+#include "vertex_attribute.h"
 
 StlEncoder::StlEncoder() {
 }
@@ -47,10 +47,30 @@ bool StlEncoder::encode_mesh(const Mesh& mesh, const std::filesystem::path& outp
 
   std::ofstream out(output_path, std::ios::out | std::ios::binary);
 
+  bool has_normals = mesh.has_attribute(VertexAttribute::Normal);
+  const auto& positions = mesh.positions();
+  const auto& normals = mesh.normals();
+
   out << "solid output\r\n";
 
   for (const auto& tri : mesh.triangles()) {
-    WriteStlTriangle(out, tri);
+    // Write face normal. Use the normal of the first vertex, or zero if no normals.
+    out << "facet normal ";
+    if (has_normals) {
+      const auto& n = normals[tri[0]];
+      out << std::setprecision(15) << n.x << " " << n.y << " " << n.z << "\r\n";
+    } else {
+      out << "0 0 0\r\n";
+    }
+
+    out << "   outer loop\r\n";
+    for (int i = 0; i < 3; ++i) {
+      const auto& v = positions[tri[i]];
+      out << "      vertex ";
+      out << std::setprecision(15) << v.x << " " << v.y << " " << v.z << "\r\n";
+    }
+    out << "   endloop\r\n";
+    out << "endfacet\r\n";
   }
 
   out << "endsolid output\r\n";
@@ -58,28 +78,4 @@ bool StlEncoder::encode_mesh(const Mesh& mesh, const std::filesystem::path& outp
   out.close();
 
   return true;
-}
-
-// Writes the contents of a Triangle to the output stream
-void StlEncoder::WriteStlTriangle(std::ofstream& out, Triangle::ShPtr t) {
-
-  out << "facet normal ";
-  WriteStlVertex(out, t->norm_);
-  out << "   outer loop\r\n";
-  out << "      vertex ";
-  WriteStlVertex(out, t->v1_);
-  out << "      vertex ";
-  WriteStlVertex(out, t->v2_);
-  out << "      vertex ";
-  WriteStlVertex(out, t->v3_);
-  out << "   endloop\r\n";
-  out << "endfacet\r\n";
-}
-
-// Writes the contents of a Vec3f to the output stream
-void StlEncoder::WriteStlVertex(std::ofstream& out, Vec3f::ShPtr v) {
-
-  out << std::setprecision(15) << v->x << " ";
-  out << std::setprecision(15) << v->y << " ";
-  out << std::setprecision(15) << v->z << "\r\n";
 }
