@@ -14,7 +14,8 @@ StlbDecoder::StlbDecoder() {
 StlbDecoder::~StlbDecoder() {
 }
 
-Scene::ShPtr StlbDecoder::decode(const std::vector<char>& b) {
+Scene::ShPtr StlbDecoder::decode(const std::vector<char>& b,
+                                 const std::filesystem::path& source_path) {
 
   auto mesh = std::make_shared<Mesh>();
   auto fsize = b.size();

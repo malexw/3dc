@@ -52,7 +52,7 @@ int main(int argc, char * argv[]) {
       return 0;
     }
 
-    auto scene = d->decode(b);
+    auto scene = d->decode(b, argv[2]);
     e->encode(*scene, argv[4]);
 
   } else {

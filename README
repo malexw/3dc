@@ -1,6 +1,6 @@
 Compiling
 -------------------
-Requires a C++11 compiler. No external dependencies.
+Requires a C++17 compiler. No external dependencies.
 
 Run
 $ make
@@ -14,6 +14,16 @@ $ ./3dc input_type input_file output_type output_file
 Where input_type and output_type is one of:
 "stl", "stlb", or "obj"
 
-Known Issues
+OBJ Format Limitations
 -------------------
-The OBJ parser does not currently support materials or textures.
+All geometry is triangulated on output. N-gon faces are triangulated using
+ear clipping during import.
+
+The following OBJ features are not supported:
+- Object names (o) and groups (g) are ignored
+- Smoothing groups (s) are ignored
+- Negative vertex indices not supported
+- Line (l) and point (p) elements not supported
+- Free-form geometry (curves, surfaces) not supported
+- Texture map options in MTL files are ignored
+- Per-vertex colors not supported

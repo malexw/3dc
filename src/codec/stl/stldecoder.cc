@@ -14,7 +14,8 @@ StlDecoder::StlDecoder() {
 StlDecoder::~StlDecoder() {
 }
 
-Scene::ShPtr StlDecoder::decode(const std::vector<char>& b) {
+Scene::ShPtr StlDecoder::decode(const std::vector<char>& b,
+                                const std::filesystem::path& source_path) {
 
   std::string header = "solid";
   std::string facet = "facet";

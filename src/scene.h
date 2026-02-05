@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include "material.h"
 #include "node.h"
 
 /*
@@ -32,9 +33,16 @@ class Scene {
   // Adds a node to the scene
   void add_node(Node::ShPtr n);
 
+  // Materials
+  const int material_count() const;
+  Material::ShPtr get_material(int i) const;
+  const std::vector<Material::ShPtr>& materials() const;
+  void add_material(Material::ShPtr m);
+
  private:
   std::string name_;
   std::vector<Node::ShPtr> nodes_;
+  std::vector<Material::ShPtr> materials_;
 
   Scene(const Scene&) = delete;
   Scene& operator=(const Scene&) = delete;

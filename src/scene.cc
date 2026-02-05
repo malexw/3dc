@@ -29,3 +29,19 @@ const std::vector<Node::ShPtr>& Scene::nodes() const {
 void Scene::add_node(Node::ShPtr n) {
   nodes_.push_back(n);
 }
+
+const int Scene::material_count() const {
+  return materials_.size();
+}
+
+Material::ShPtr Scene::get_material(int i) const {
+  return materials_.at(i);
+}
+
+const std::vector<Material::ShPtr>& Scene::materials() const {
+  return materials_;
+}
+
+void Scene::add_material(Material::ShPtr m) {
+  materials_.push_back(m);
+}

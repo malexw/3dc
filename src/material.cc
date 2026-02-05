@@ -1,0 +1,116 @@
+#include "material.h"
+
+Material::Material() {
+}
+
+const std::string& Material::name() const {
+  return name_;
+}
+
+void Material::set_name(const std::string& name) {
+  name_ = name;
+}
+
+const std::optional<int>& Material::illum() const {
+  return illum_;
+}
+
+void Material::set_illum(int illum) {
+  illum_ = illum;
+}
+
+const std::optional<Vec3f>& Material::ka() const {
+  return ka_;
+}
+
+void Material::set_ka(const Vec3f& ka) {
+  ka_ = ka;
+}
+
+const std::optional<Vec3f>& Material::kd() const {
+  return kd_;
+}
+
+void Material::set_kd(const Vec3f& kd) {
+  kd_ = kd;
+}
+
+const std::optional<Vec3f>& Material::ks() const {
+  return ks_;
+}
+
+void Material::set_ks(const Vec3f& ks) {
+  ks_ = ks;
+}
+
+const std::optional<float>& Material::ns() const {
+  return ns_;
+}
+
+void Material::set_ns(float ns) {
+  ns_ = ns;
+}
+
+const std::optional<float>& Material::d() const {
+  return d_;
+}
+
+void Material::set_d(float d) {
+  d_ = d;
+}
+
+const std::string& Material::map_ka() const {
+  return map_ka_;
+}
+
+void Material::set_map_ka(const std::string& path) {
+  map_ka_ = path;
+}
+
+const std::string& Material::map_kd() const {
+  return map_kd_;
+}
+
+void Material::set_map_kd(const std::string& path) {
+  map_kd_ = path;
+}
+
+const std::string& Material::map_ks() const {
+  return map_ks_;
+}
+
+void Material::set_map_ks(const std::string& path) {
+  map_ks_ = path;
+}
+
+const std::string& Material::map_d() const {
+  return map_d_;
+}
+
+void Material::set_map_d(const std::string& path) {
+  map_d_ = path;
+}
+
+const std::string& Material::map_bump() const {
+  return map_bump_;
+}
+
+void Material::set_map_bump(const std::string& path) {
+  map_bump_ = path;
+}
+
+const std::string& Material::disp() const {
+  return disp_;
+}
+
+void Material::set_disp(const std::string& path) {
+  disp_ = path;
+}
+
+const std::string& Material::decal() const {
+  return decal_;
+}
+
+void Material::set_decal(const std::string& path) {
+  decal_ = path;
+}

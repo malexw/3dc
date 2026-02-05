@@ -14,7 +14,8 @@ class StlbDecoder : public Decoder {
 
   StlbDecoder();
   ~StlbDecoder();
-  Scene::ShPtr decode(const std::vector<char>& b) override;
+  Scene::ShPtr decode(const std::vector<char>& b,
+                      const std::filesystem::path& source_path) override;
 
  private:
   float btof(const char* start);

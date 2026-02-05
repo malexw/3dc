@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 
+#include "material.h"
 #include "vec2f.h"
 #include "vec3f.h"
 #include "vertex_attribute.h"
@@ -43,12 +44,17 @@ class Mesh {
   const std::vector<std::array<uint32_t, 3>>& triangles() const;
   void add_triangle(uint32_t v0, uint32_t v1, uint32_t v2);
 
+  // Material
+  Material::ShPtr material() const;
+  void set_material(Material::ShPtr material);
+
   // Name
   const std::string& name() const;
   void set_name(const std::string& name);
 
  private:
   std::string name_;
+  Material::ShPtr material_;
   std::vector<Vec3f> positions_;
   std::vector<Vec3f> normals_;
   std::vector<Vec2f> texcoords0_;

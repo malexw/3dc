@@ -52,6 +52,14 @@ void Mesh::add_triangle(uint32_t v0, uint32_t v1, uint32_t v2) {
   triangles_.push_back({v0, v1, v2});
 }
 
+Material::ShPtr Mesh::material() const {
+  return material_;
+}
+
+void Mesh::set_material(Material::ShPtr material) {
+  material_ = material;
+}
+
 const std::string& Mesh::name() const {
   return name_;
 }

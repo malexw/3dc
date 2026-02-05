@@ -14,7 +14,8 @@ class StlDecoder : public Decoder {
 
   StlDecoder();
   ~StlDecoder();
-  Scene::ShPtr decode(const std::vector<char>& b) override;
+  Scene::ShPtr decode(const std::vector<char>& b,
+                      const std::filesystem::path& source_path) override;
 
  private:
   // Returns the index of the first non-whitespace character after offset
