@@ -1,5 +1,7 @@
 #include "mesh.h"
 
+#include "transform.h"
+
 bool Mesh::has_attribute(VertexAttribute attr) const {
   switch (attr) {
     case VertexAttribute::Position:
@@ -66,4 +68,13 @@ const std::string& Mesh::name() const {
 
 void Mesh::set_name(const std::string& name) {
   name_ = name;
+}
+
+void Mesh::apply_transform(const std::array<float, 16>& m) {
+  for (auto& pos : positions_) {
+    pos = transform::apply_point(m, pos);
+  }
+  for (auto& norm : normals_) {
+    norm = transform::apply_vector(m, norm).normalized();
+  }
 }

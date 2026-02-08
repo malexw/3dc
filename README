@@ -9,10 +9,27 @@ The compiled binary will be created in a new bin/ directory.
 
 Usage
 -------------------
-$ ./3dc input_type input_file output_type output_file
+$ ./3dc [OPTIONS] input_type input_file output_type output_file
 
 Where input_type and output_type is one of:
 "stl", "stlb", or "obj"
+
+Transform Options
+-------------------
+Transforms are applied to the model geometry before encoding output.
+Multiple transforms can be specified and are applied in the order given.
+
+  -t, --translate X Y Z    Translate by (X, Y, Z)
+  -rx, --rotate-x DEG      Rotate around X axis by DEG degrees
+  -ry, --rotate-y DEG      Rotate around Y axis by DEG degrees
+  -rz, --rotate-z DEG      Rotate around Z axis by DEG degrees
+  -s, --scale FACTOR       Uniform scale by FACTOR
+
+Examples:
+  ./3dc -t 0 0 10 obj model.obj obj translated.obj    # Shift Z by 10
+  ./3dc -rx 90 obj model.obj obj rotated.obj          # Rotate around X
+  ./3dc -s 2 obj model.obj obj scaled.obj             # Double size
+  ./3dc -s 0.5 -t 0 0 10 -rz 45 obj in.obj obj out.obj  # Chained transforms
 
 OBJ Format Limitations
 -------------------

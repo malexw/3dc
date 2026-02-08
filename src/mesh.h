@@ -52,6 +52,9 @@ class Mesh {
   const std::string& name() const;
   void set_name(const std::string& name);
 
+  // Apply a 4x4 transform matrix to positions and normals
+  void apply_transform(const std::array<float, 16>& m);
+
  private:
   std::string name_;
   Material::ShPtr material_;
