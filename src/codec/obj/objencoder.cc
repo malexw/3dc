@@ -166,6 +166,29 @@ bool ObjEncoder::encode_mtl(const Scene& scene,
     if (!mat->decal().empty()) {
       out << "decal " << mat->decal() << "\n";
     }
+
+    // PBR extensions
+    if (mat->pr().has_value()) {
+      out << "Pr " << mat->pr().value() << "\n";
+    }
+    if (mat->pm().has_value()) {
+      out << "Pm " << mat->pm().value() << "\n";
+    }
+    if (mat->ke().has_value()) {
+      write_vec3f(out, "Ke", mat->ke().value());
+    }
+    if (!mat->map_pr().empty()) {
+      out << "map_Pr " << mat->map_pr() << "\n";
+    }
+    if (!mat->map_pm().empty()) {
+      out << "map_Pm " << mat->map_pm() << "\n";
+    }
+    if (!mat->map_ke().empty()) {
+      out << "map_Ke " << mat->map_ke() << "\n";
+    }
+    if (!mat->norm().empty()) {
+      out << "norm " << mat->norm() << "\n";
+    }
   }
 
   out.close();

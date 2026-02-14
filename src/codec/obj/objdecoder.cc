@@ -282,6 +282,25 @@ std::map<std::string, Material::ShPtr> ObjDecoder::parse_mtl(
     } else if (tokens[0] == "decal" && tokens.size() >= 2) {
       current->set_decal(parse_texture_map(
           {tokens.begin() + 1, tokens.end()}, "decal"));
+    } else if (tokens[0] == "Pr" && tokens.size() >= 2) {
+      current->set_pr(std::stof(tokens[1]));
+    } else if (tokens[0] == "Pm" && tokens.size() >= 2) {
+      current->set_pm(std::stof(tokens[1]));
+    } else if (tokens[0] == "Ke" && tokens.size() >= 4) {
+      current->set_ke(Vec3f(std::stof(tokens[1]), std::stof(tokens[2]),
+                            std::stof(tokens[3])));
+    } else if (tokens[0] == "map_Pr" && tokens.size() >= 2) {
+      current->set_map_pr(parse_texture_map(
+          {tokens.begin() + 1, tokens.end()}, "map_Pr"));
+    } else if (tokens[0] == "map_Pm" && tokens.size() >= 2) {
+      current->set_map_pm(parse_texture_map(
+          {tokens.begin() + 1, tokens.end()}, "map_Pm"));
+    } else if (tokens[0] == "map_Ke" && tokens.size() >= 2) {
+      current->set_map_ke(parse_texture_map(
+          {tokens.begin() + 1, tokens.end()}, "map_Ke"));
+    } else if (tokens[0] == "norm" && tokens.size() >= 2) {
+      current->set_norm(parse_texture_map(
+          {tokens.begin() + 1, tokens.end()}, "norm"));
     } else {
       std::cout << "Warning: unsupported material property: " << tokens[0]
                 << std::endl;

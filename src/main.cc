@@ -7,6 +7,7 @@
 
 #include "decoder.h"
 #include "encoder.h"
+#include "material_convert.h"
 #include "scene.h"
 #include "transform.h"
 #include "obj/objdecoder.h"
@@ -23,6 +24,7 @@ int main(int argc, char * argv[]) {
 
   // Parse command-line arguments
   transform::Mat4 xform = transform::identity();
+  std::string material_mode;  // "pbr" or "blinn-phong", empty = no conversion
   std::vector<std::string_view> positional;
 
   int i = 1;
@@ -70,6 +72,17 @@ int main(int argc, char * argv[]) {
       }
       float factor = std::strtof(argv[i + 1], nullptr);
       xform = transform::multiply(transform::scale(factor), xform);
+      i += 2;
+    } else if (arg == "-m" || arg == "--materials") {
+      if (i + 1 >= argc) {
+        std::cerr << "Error: --materials requires 1 argument (pbr or blinn-phong)" << std::endl;
+        return 1;
+      }
+      material_mode = argv[i + 1];
+      if (material_mode != "pbr" && material_mode != "blinn-phong") {
+        std::cerr << "Error: --materials mode must be 'pbr' or 'blinn-phong'" << std::endl;
+        return 1;
+      }
       i += 2;
     } else {
       positional.push_back(arg);
@@ -124,6 +137,17 @@ int main(int argc, char * argv[]) {
 
   auto scene = d->decode(b, input_file.c_str());
 
+  // Convert materials if requested
+  if (!material_mode.empty()) {
+    for (const auto& mat : scene->materials()) {
+      if (material_mode == "pbr") {
+        convert_to_pbr(*mat);
+      } else {
+        convert_to_blinn_phong(*mat);
+      }
+    }
+  }
+
   // Apply transform if not identity
   if (!is_identity(xform)) {
     for (const auto& node : scene->nodes()) {
@@ -156,6 +180,9 @@ void show_usage() {
   std::cout << "  -ry, --rotate-y DEG      Rotate around Y axis by DEG degrees" << std::endl;
   std::cout << "  -rz, --rotate-z DEG      Rotate around Z axis by DEG degrees" << std::endl;
   std::cout << "  -s, --scale FACTOR       Uniform scale by FACTOR" << std::endl;
+  std::cout << std::endl;
+  std::cout << "Material options:" << std::endl;
+  std::cout << "  -m, --materials MODE     Convert materials to MODE (pbr, blinn-phong)" << std::endl;
   std::cout << std::endl;
   std::cout << "Supported formats: stl, stlb, obj" << std::endl;
 }

@@ -114,3 +114,83 @@ const std::string& Material::decal() const {
 void Material::set_decal(const std::string& path) {
   decal_ = path;
 }
+
+// PBR accessors
+
+const std::optional<float>& Material::pr() const {
+  return pr_;
+}
+
+void Material::set_pr(float pr) {
+  pr_ = pr;
+}
+
+const std::optional<float>& Material::pm() const {
+  return pm_;
+}
+
+void Material::set_pm(float pm) {
+  pm_ = pm;
+}
+
+const std::optional<Vec3f>& Material::ke() const {
+  return ke_;
+}
+
+void Material::set_ke(const Vec3f& ke) {
+  ke_ = ke;
+}
+
+const std::string& Material::map_pr() const {
+  return map_pr_;
+}
+
+void Material::set_map_pr(const std::string& path) {
+  map_pr_ = path;
+}
+
+const std::string& Material::map_pm() const {
+  return map_pm_;
+}
+
+void Material::set_map_pm(const std::string& path) {
+  map_pm_ = path;
+}
+
+const std::string& Material::map_ke() const {
+  return map_ke_;
+}
+
+void Material::set_map_ke(const std::string& path) {
+  map_ke_ = path;
+}
+
+const std::string& Material::norm() const {
+  return norm_;
+}
+
+void Material::set_norm(const std::string& path) {
+  norm_ = path;
+}
+
+bool Material::has_pbr() const {
+  return pr_.has_value() || pm_.has_value() || ke_.has_value() ||
+         !map_pr_.empty() || !map_pm_.empty() || !map_ke_.empty() ||
+         !norm_.empty();
+}
+
+bool Material::has_blinn_phong() const {
+  return ka_.has_value() || ks_.has_value() || ns_.has_value() ||
+         !map_ka_.empty() || !map_ks_.empty();
+}
+
+void Material::clear_ka() { ka_.reset(); }
+void Material::clear_ks() { ks_.reset(); }
+void Material::clear_ns() { ns_.reset(); }
+void Material::clear_map_ka() { map_ka_.clear(); }
+void Material::clear_map_ks() { map_ks_.clear(); }
+void Material::clear_pr() { pr_.reset(); }
+void Material::clear_pm() { pm_.reset(); }
+void Material::clear_map_pr() { map_pr_.clear(); }
+void Material::clear_map_pm() { map_pm_.clear(); }
+void Material::clear_norm() { norm_.clear(); }

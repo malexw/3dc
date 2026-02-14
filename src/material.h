@@ -9,7 +9,7 @@
 
 /*
  * A material describes the surface appearance of a mesh.
- * Currently supports Blinn-Phong properties (OBJ/MTL).
+ * Supports Blinn-Phong and PBR properties (OBJ/MTL).
  */
 class Material {
 
@@ -61,6 +61,44 @@ class Material {
   const std::string& decal() const;
   void set_decal(const std::string& path);
 
+  // PBR properties (MTL extensions)
+  const std::optional<float>& pr() const;
+  void set_pr(float pr);
+
+  const std::optional<float>& pm() const;
+  void set_pm(float pm);
+
+  const std::optional<Vec3f>& ke() const;
+  void set_ke(const Vec3f& ke);
+
+  const std::string& map_pr() const;
+  void set_map_pr(const std::string& path);
+
+  const std::string& map_pm() const;
+  void set_map_pm(const std::string& path);
+
+  const std::string& map_ke() const;
+  void set_map_ke(const std::string& path);
+
+  const std::string& norm() const;
+  void set_norm(const std::string& path);
+
+  // Query helpers
+  bool has_pbr() const;
+  bool has_blinn_phong() const;
+
+  // Clear helpers (for conversion)
+  void clear_ka();
+  void clear_ks();
+  void clear_ns();
+  void clear_map_ka();
+  void clear_map_ks();
+  void clear_pr();
+  void clear_pm();
+  void clear_map_pr();
+  void clear_map_pm();
+  void clear_norm();
+
  private:
   std::string name_;
   std::optional<int> illum_;
@@ -76,6 +114,15 @@ class Material {
   std::string map_bump_;
   std::string disp_;
   std::string decal_;
+
+  // PBR
+  std::optional<float> pr_;
+  std::optional<float> pm_;
+  std::optional<Vec3f> ke_;
+  std::string map_pr_;
+  std::string map_pm_;
+  std::string map_ke_;
+  std::string norm_;
 };
 
 #endif
