@@ -2,11 +2,13 @@
 #include <iostream>
 #include <string>
 
-#include "stldecoder.h"
-#include "mesh.h"
-#include "node.h"
-#include "scene.h"
-#include "vec3f.h"
+#include "tdc/codec/stl/stldecoder.h"
+#include "tdc/mesh.h"
+#include "tdc/node.h"
+#include "tdc/scene.h"
+#include "tdc/vec3f.h"
+
+namespace tdc {
 
 StlDecoder::StlDecoder() {
 }
@@ -178,3 +180,5 @@ std::vector<std::string> StlDecoder::Tokenize(const std::vector<char>& b, int of
 
   return tokens;
 }
+
+}  // namespace tdc

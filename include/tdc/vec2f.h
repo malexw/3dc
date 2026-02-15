@@ -1,6 +1,8 @@
 #ifndef TDC_VEC2F_H_
 #define TDC_VEC2F_H_
 
+namespace tdc {
+
 // A 2-component float vector
 class Vec2f {
  public:
@@ -9,5 +11,7 @@ class Vec2f {
   Vec2f();
   Vec2f(float x, float y);
 };
+
+}  // namespace tdc
 
 #endif

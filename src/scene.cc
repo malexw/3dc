@@ -1,4 +1,6 @@
-#include "scene.h"
+#include "tdc/scene.h"
+
+namespace tdc {
 
 Scene::Scene() {
 }
@@ -45,3 +47,5 @@ const std::vector<Material::ShPtr>& Scene::materials() const {
 void Scene::add_material(Material::ShPtr m) {
   materials_.push_back(m);
 }
+
+}  // namespace tdc

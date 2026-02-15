@@ -3,7 +3,9 @@
 
 #include <filesystem>
 
-#include "scene.h"
+#include "tdc/scene.h"
+
+namespace tdc {
 
 // Base encoder class that all encoders should extend. Turns Scenes into files.
 class Encoder {
@@ -15,5 +17,7 @@ class Encoder {
   virtual bool encode(const Scene& scene, const std::filesystem::path& output_path) = 0;
 
 };
+
+}  // namespace tdc
 
 #endif

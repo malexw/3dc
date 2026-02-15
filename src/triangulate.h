@@ -4,7 +4,9 @@
 #include <array>
 #include <vector>
 
-#include "vec3f.h"
+#include "tdc/vec3f.h"
+
+namespace tdc {
 
 // Triangulates a simple polygon (convex or concave) using ear clipping.
 // `positions` is the full positions array; `polygon` contains indices into it.
@@ -12,5 +14,7 @@
 std::vector<std::array<int, 3>> triangulate_polygon(
     const std::vector<Vec3f>& positions,
     const std::vector<int>& polygon);
+
+}  // namespace tdc
 
 #endif

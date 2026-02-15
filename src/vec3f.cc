@@ -1,6 +1,8 @@
-#include "vec3f.h"
+#include "tdc/vec3f.h"
 
 #include <cmath>
+
+namespace tdc {
 
 Vec3f::Vec3f()
     : x(0.0f),
@@ -48,3 +50,5 @@ Vec3f Vec3f::normalized() const {
   }
   return *this;
 }
+
+}  // namespace tdc

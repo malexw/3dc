@@ -3,8 +3,10 @@
 
 #include <vector>
 
-#include "encoder.h"
-#include "mesh.h"
+#include "tdc/codec/encoder.h"
+#include "tdc/mesh.h"
+
+namespace tdc {
 
 // Writes the contents of a Scene to binary STL files
 class StlbEncoder : public Encoder {
@@ -22,5 +24,7 @@ class StlbEncoder : public Encoder {
   StlbEncoder(const StlbEncoder&) = delete;
   StlbEncoder& operator=(const StlbEncoder&) = delete;
 };
+
+}  // namespace tdc
 
 #endif

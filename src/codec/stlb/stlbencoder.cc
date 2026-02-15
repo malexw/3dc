@@ -4,12 +4,14 @@
 #include <iostream>
 #include <string>
 
-#include "stlbencoder.h"
-#include "mesh.h"
-#include "node.h"
-#include "scene.h"
-#include "vec3f.h"
-#include "vertex_attribute.h"
+#include "tdc/codec/stlb/stlbencoder.h"
+#include "tdc/mesh.h"
+#include "tdc/node.h"
+#include "tdc/scene.h"
+#include "tdc/vec3f.h"
+#include "tdc/vertex_attribute.h"
+
+namespace tdc {
 
 static void write_uint32_le(std::ofstream& out, uint32_t value) {
   char bytes[4];
@@ -106,3 +108,5 @@ bool StlbEncoder::encode_mesh(const Mesh& mesh, const std::filesystem::path& out
 
   return true;
 }
+
+}  // namespace tdc

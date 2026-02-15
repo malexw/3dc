@@ -4,7 +4,9 @@
 #include <filesystem>
 #include <vector>
 
-#include "scene.h"
+#include "tdc/scene.h"
+
+namespace tdc {
 
 // Base decoder class that all decoders should extend. Responsible for turning input files into Scene objects.
 // source_path is the path to the input file, used to resolve references to auxiliary files (e.g. MTL).
@@ -18,5 +20,7 @@ class Decoder {
                               const std::filesystem::path& source_path) = 0;
 
 };
+
+}  // namespace tdc
 
 #endif

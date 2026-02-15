@@ -3,8 +3,10 @@
 
 #include <vector>
 
-#include "decoder.h"
-#include "scene.h"
+#include "tdc/codec/decoder.h"
+#include "tdc/scene.h"
+
+namespace tdc {
 
 // Decoder class for reading binary STL files
 class StlbDecoder : public Decoder {
@@ -23,5 +25,7 @@ class StlbDecoder : public Decoder {
   StlbDecoder(const StlbDecoder&) = delete;
   StlbDecoder& operator=(const StlbDecoder&) = delete;
 };
+
+}  // namespace tdc
 
 #endif

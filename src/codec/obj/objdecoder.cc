@@ -5,14 +5,16 @@
 #include <string>
 #include <tuple>
 
-#include "objdecoder.h"
-#include "material.h"
-#include "mesh.h"
-#include "node.h"
-#include "scene.h"
+#include "tdc/codec/obj/objdecoder.h"
+#include "tdc/material.h"
+#include "tdc/mesh.h"
+#include "tdc/node.h"
+#include "tdc/scene.h"
 #include "triangulate.h"
-#include "vec2f.h"
-#include "vec3f.h"
+#include "tdc/vec2f.h"
+#include "tdc/vec3f.h"
+
+namespace tdc {
 
 ObjDecoder::ObjDecoder() {
 }
@@ -388,3 +390,5 @@ std::vector<std::string> ObjDecoder::Tokenize(const std::vector<char>& b, int of
 
   return tokens;
 }
+
+}  // namespace tdc

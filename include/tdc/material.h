@@ -5,7 +5,9 @@
 #include <optional>
 #include <string>
 
-#include "vec3f.h"
+#include "tdc/vec3f.h"
+
+namespace tdc {
 
 /*
  * A material describes the surface appearance of a mesh.
@@ -124,5 +126,7 @@ class Material {
   std::string map_ke_;
   std::string norm_;
 };
+
+}  // namespace tdc
 
 #endif

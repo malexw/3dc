@@ -1,6 +1,8 @@
-#include "mesh.h"
+#include "tdc/mesh.h"
 
-#include "transform.h"
+#include "tdc/transform.h"
+
+namespace tdc {
 
 bool Mesh::has_attribute(VertexAttribute attr) const {
   switch (attr) {
@@ -78,3 +80,5 @@ void Mesh::apply_transform(const std::array<float, 16>& m) {
     norm = transform::apply_vector(m, norm).normalized();
   }
 }
+
+}  // namespace tdc

@@ -2,13 +2,15 @@
 #include <iostream>
 #include <string>
 
-#include "objencoder.h"
-#include "material.h"
-#include "mesh.h"
-#include "node.h"
-#include "scene.h"
-#include "vec3f.h"
-#include "vertex_attribute.h"
+#include "tdc/codec/obj/objencoder.h"
+#include "tdc/material.h"
+#include "tdc/mesh.h"
+#include "tdc/node.h"
+#include "tdc/scene.h"
+#include "tdc/vec3f.h"
+#include "tdc/vertex_attribute.h"
+
+namespace tdc {
 
 ObjEncoder::ObjEncoder() {
 }
@@ -200,3 +202,5 @@ void ObjEncoder::write_vec3f(std::ostream& out, const std::string& keyword,
                               const Vec3f& v) {
   out << keyword << " " << v.x << " " << v.y << " " << v.z << "\n";
 }
+
+}  // namespace tdc

@@ -1,4 +1,6 @@
-#include "material.h"
+#include "tdc/material.h"
+
+namespace tdc {
 
 Material::Material() {
 }
@@ -194,3 +196,5 @@ void Material::clear_pm() { pm_.reset(); }
 void Material::clear_map_pr() { map_pr_.clear(); }
 void Material::clear_map_pm() { map_pm_.clear(); }
 void Material::clear_norm() { norm_.clear(); }
+
+}  // namespace tdc

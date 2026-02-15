@@ -1,6 +1,8 @@
 #ifndef TDC_VEC3F_H_
 #define TDC_VEC3F_H_
 
+namespace tdc {
+
 // A 3-component float vector
 class Vec3f {
  public:
@@ -17,5 +19,7 @@ class Vec3f {
   float length() const;
   Vec3f normalized() const;
 };
+
+}  // namespace tdc
 
 #endif

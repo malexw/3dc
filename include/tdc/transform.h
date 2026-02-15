@@ -3,9 +3,9 @@
 
 #include <array>
 
-#include "vec3f.h"
+#include "tdc/vec3f.h"
 
-namespace transform {
+namespace tdc::transform {
 
 using Mat4 = std::array<float, 16>;
 
@@ -32,6 +32,6 @@ Vec3f apply_point(const Mat4& m, const Vec3f& p);
 // Apply matrix to vector (direction/normal, not affected by translation)
 Vec3f apply_vector(const Mat4& m, const Vec3f& v);
 
-}  // namespace transform
+}  // namespace tdc::transform
 
 #endif

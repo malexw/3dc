@@ -2,11 +2,13 @@
 #include <cstring>
 #include <iostream>
 
-#include "stlbdecoder.h"
-#include "mesh.h"
-#include "node.h"
-#include "scene.h"
-#include "vec3f.h"
+#include "tdc/codec/stlb/stlbdecoder.h"
+#include "tdc/mesh.h"
+#include "tdc/node.h"
+#include "tdc/scene.h"
+#include "tdc/vec3f.h"
+
+namespace tdc {
 
 StlbDecoder::StlbDecoder() {
 }
@@ -80,3 +82,5 @@ float StlbDecoder::btof(const char* start) {
 
   return ret;
 }
+
+}  // namespace tdc

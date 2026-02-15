@@ -4,9 +4,11 @@
 #include <filesystem>
 #include <vector>
 
-#include "encoder.h"
-#include "material.h"
-#include "mesh.h"
+#include "tdc/codec/encoder.h"
+#include "tdc/material.h"
+#include "tdc/mesh.h"
+
+namespace tdc {
 
 // Writes the contents of a Scene to OBJ files
 class ObjEncoder : public Encoder {
@@ -28,5 +30,7 @@ class ObjEncoder : public Encoder {
   ObjEncoder(const ObjEncoder&) = delete;
   ObjEncoder& operator=(const ObjEncoder&) = delete;
 };
+
+}  // namespace tdc
 
 #endif

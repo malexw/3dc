@@ -4,6 +4,7 @@
 #include <iostream>
 #include <list>
 
+namespace tdc {
 namespace {
 
 // Compute the polygon face normal using Newell's method.
@@ -165,3 +166,5 @@ std::vector<std::array<int, 3>> triangulate_polygon(
 
   return triangles;
 }
+
+}  // namespace tdc

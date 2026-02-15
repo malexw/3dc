@@ -1,8 +1,10 @@
-#include "material_convert.h"
+#include "tdc/material_convert.h"
 
 #include <algorithm>
 #include <cmath>
 #include <iostream>
+
+namespace tdc {
 
 void convert_to_pbr(Material& mat) {
   std::string name = mat.name();
@@ -128,3 +130,5 @@ void convert_to_blinn_phong(Material& mat) {
     mat.clear_norm();
   }
 }
+
+}  // namespace tdc

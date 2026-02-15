@@ -5,9 +5,11 @@
 #include <string>
 #include <vector>
 
-#include "decoder.h"
-#include "material.h"
-#include "scene.h"
+#include "tdc/codec/decoder.h"
+#include "tdc/material.h"
+#include "tdc/scene.h"
+
+namespace tdc {
 
 // Decoder class for reading ASCII OBJ files
 class ObjDecoder : public Decoder {
@@ -40,5 +42,7 @@ class ObjDecoder : public Decoder {
   ObjDecoder(const ObjDecoder&) = delete;
   ObjDecoder& operator=(const ObjDecoder&) = delete;
 };
+
+}  // namespace tdc
 
 #endif

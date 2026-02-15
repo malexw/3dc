@@ -4,8 +4,10 @@
 #include <string>
 #include <vector>
 
-#include "material.h"
-#include "node.h"
+#include "tdc/material.h"
+#include "tdc/node.h"
+
+namespace tdc {
 
 /*
  * A scene contains a collection of nodes, each of which holds a mesh and transform.
@@ -47,5 +49,7 @@ class Scene {
   Scene(const Scene&) = delete;
   Scene& operator=(const Scene&) = delete;
 };
+
+}  // namespace tdc
 
 #endif

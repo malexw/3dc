@@ -5,17 +5,19 @@
 #include <string_view>
 #include <vector>
 
-#include "decoder.h"
-#include "encoder.h"
-#include "material_convert.h"
-#include "scene.h"
-#include "transform.h"
-#include "obj/objdecoder.h"
-#include "obj/objencoder.h"
-#include "stlb/stlbdecoder.h"
-#include "stlb/stlbencoder.h"
-#include "stl/stldecoder.h"
-#include "stl/stlencoder.h"
+#include "tdc/codec/decoder.h"
+#include "tdc/codec/encoder.h"
+#include "tdc/material_convert.h"
+#include "tdc/scene.h"
+#include "tdc/transform.h"
+#include "tdc/codec/obj/objdecoder.h"
+#include "tdc/codec/obj/objencoder.h"
+#include "tdc/codec/stlb/stlbdecoder.h"
+#include "tdc/codec/stlb/stlbencoder.h"
+#include "tdc/codec/stl/stldecoder.h"
+#include "tdc/codec/stl/stlencoder.h"
+
+using namespace tdc;
 
 void show_usage();
 bool is_identity(const transform::Mat4& m);

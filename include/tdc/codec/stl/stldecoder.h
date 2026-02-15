@@ -3,8 +3,10 @@
 
 #include <vector>
 
-#include "decoder.h"
-#include "scene.h"
+#include "tdc/codec/decoder.h"
+#include "tdc/scene.h"
+
+namespace tdc {
 
 // Decoder class for reading ASCII STL files and converting them to Scenes
 class StlDecoder : public Decoder {
@@ -34,5 +36,7 @@ class StlDecoder : public Decoder {
   StlDecoder(const StlDecoder&) = delete;
   StlDecoder& operator=(const StlDecoder&) = delete;
 };
+
+}  // namespace tdc
 
 #endif

@@ -1,4 +1,6 @@
-#include "node.h"
+#include "tdc/node.h"
+
+namespace tdc {
 
 Node::Node() {
   set_identity();
@@ -38,3 +40,5 @@ void Node::set_identity() {
   matrix_[10] = 1.0f;
   matrix_[15] = 1.0f;
 }
+
+}  // namespace tdc

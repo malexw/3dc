@@ -3,12 +3,14 @@
 #include <iostream>
 #include <string>
 
-#include "stlencoder.h"
-#include "mesh.h"
-#include "node.h"
-#include "scene.h"
-#include "vec3f.h"
-#include "vertex_attribute.h"
+#include "tdc/codec/stl/stlencoder.h"
+#include "tdc/mesh.h"
+#include "tdc/node.h"
+#include "tdc/scene.h"
+#include "tdc/vec3f.h"
+#include "tdc/vertex_attribute.h"
+
+namespace tdc {
 
 StlEncoder::StlEncoder() {
 }
@@ -79,3 +81,5 @@ bool StlEncoder::encode_mesh(const Mesh& mesh, const std::filesystem::path& outp
 
   return true;
 }
+
+}  // namespace tdc

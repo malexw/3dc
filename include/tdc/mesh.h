@@ -7,10 +7,12 @@
 #include <string>
 #include <vector>
 
-#include "material.h"
-#include "vec2f.h"
-#include "vec3f.h"
-#include "vertex_attribute.h"
+#include "tdc/material.h"
+#include "tdc/vec2f.h"
+#include "tdc/vec3f.h"
+#include "tdc/vertex_attribute.h"
+
+namespace tdc {
 
 /*
  * A mesh is an internal representation of a 3D object's geometry.
@@ -63,5 +65,7 @@ class Mesh {
   std::vector<Vec2f> texcoords0_;
   std::vector<std::array<uint32_t, 3>> triangles_;
 };
+
+}  // namespace tdc
 
 #endif

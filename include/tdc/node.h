@@ -4,7 +4,9 @@
 #include <array>
 #include <string>
 
-#include "mesh.h"
+#include "tdc/mesh.h"
+
+namespace tdc {
 
 /*
  * A node holds a mesh and a transform within a scene.
@@ -35,5 +37,7 @@ class Node {
   Node(const Node&) = delete;
   Node& operator=(const Node&) = delete;
 };
+
+}  // namespace tdc
 
 #endif
