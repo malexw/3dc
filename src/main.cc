@@ -24,7 +24,6 @@ bool is_identity(const transform::Mat4& m);
 
 int main(int argc, char * argv[]) {
 
-  // Parse command-line arguments
   transform::Mat4 xform = transform::identity();
   std::string material_mode;  // "pbr" or "blinn-phong", empty = no conversion
   std::vector<std::string_view> positional;
@@ -139,7 +138,6 @@ int main(int argc, char * argv[]) {
 
   auto scene = d->decode(b, input_file.c_str());
 
-  // Convert materials if requested
   if (!material_mode.empty()) {
     for (const auto& mat : scene->materials()) {
       if (material_mode == "pbr") {
@@ -150,7 +148,6 @@ int main(int argc, char * argv[]) {
     }
   }
 
-  // Apply transform if not identity
   if (!is_identity(xform)) {
     for (const auto& node : scene->nodes()) {
       if (node->mesh()) {

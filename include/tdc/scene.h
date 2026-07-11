@@ -23,19 +23,11 @@ class Scene {
   const std::string& name() const;
   void set_name(const std::string& name);
 
-  // Returns the number of nodes in the scene
   const int node_count() const;
-
-  // Returns a shared pointer to the node at index i
   Node::ShPtr get_node(int i) const;
-
-  // Returns a const reference to the node vector for iteration
   const std::vector<Node::ShPtr>& nodes() const;
-
-  // Adds a node to the scene
   void add_node(Node::ShPtr n);
 
-  // Materials
   const int material_count() const;
   Material::ShPtr get_material(int i) const;
   const std::vector<Material::ShPtr>& materials() const;

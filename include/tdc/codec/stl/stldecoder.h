@@ -23,14 +23,12 @@ class StlDecoder : public Decoder {
   // Returns the index of the first non-whitespace character after offset
   unsigned int next_index(const std::vector<char>& b, int offset);
 
-  // Returns the index of the first character following a group of newline characters after the offset
+  // Returns the index of the start of the next non-empty line
   unsigned int newline_index(const std::vector<char>& b, int offset);
 
-  // Returns true if c is a whitespace character
   bool is_whitespace(char c);
 
-  // Returns a collection of whitespace-separated character strings occuring between offset and the end of the
-  // line
+  // Splits the line at offset into whitespace-separated tokens
   std::vector<std::string> Tokenize(const std::vector<char>& b, int offset);
 
   StlDecoder(const StlDecoder&) = delete;

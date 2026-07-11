@@ -127,7 +127,6 @@ Scene::ShPtr StlDecoder::decode(const std::vector<char>& b,
   return scene;
 }
 
-// Returns the index of the first non-whitespace character after offset
 unsigned int StlDecoder::next_index(const std::vector<char>& b, int offset) {
 
   while (is_whitespace(b[offset])) {
@@ -137,7 +136,6 @@ unsigned int StlDecoder::next_index(const std::vector<char>& b, int offset) {
   return offset++;
 }
 
-// Returns the index of the first character following a group of newline characters after the offset
 unsigned int StlDecoder::newline_index(const std::vector<char>& b, int offset) {
 
   int ni = offset;
@@ -152,12 +150,10 @@ unsigned int StlDecoder::newline_index(const std::vector<char>& b, int offset) {
   return ni++;
 }
 
-// Returns true if c is a whitespace character
 bool StlDecoder::is_whitespace(char c) {
   return (c == ' ') || (c == '\t') || (c == '\n') || (c == '\r');
 }
 
-//
 std::vector<std::string> StlDecoder::Tokenize(const std::vector<char>& b, int offset) {
 
   std::vector<std::string> tokens;

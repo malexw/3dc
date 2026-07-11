@@ -23,10 +23,8 @@ class Mesh {
  public:
   typedef std::shared_ptr<Mesh> ShPtr;
 
-  // Query which attributes are present (checks if vector is non-empty)
   bool has_attribute(VertexAttribute attr) const;
 
-  // Vertex count (length of positions array)
   uint32_t vertex_count() const;
 
   // Positions — required
@@ -41,16 +39,13 @@ class Mesh {
   const std::vector<Vec2f>& texcoords0() const;
   void set_texcoords0(std::vector<Vec2f> texcoords);
 
-  // Triangle indices
   uint32_t triangle_count() const;
   const std::vector<std::array<uint32_t, 3>>& triangles() const;
   void add_triangle(uint32_t v0, uint32_t v1, uint32_t v2);
 
-  // Material
   Material::ShPtr material() const;
   void set_material(Material::ShPtr material);
 
-  // Name
   const std::string& name() const;
   void set_name(const std::string& name);
 

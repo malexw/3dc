@@ -22,7 +22,10 @@ bool ObjEncoder::encode(const Scene& scene, const std::filesystem::path& output_
 
   bool has_materials = scene.material_count() > 0;
 
-  // Write MTL file if the scene has materials
+  if (has_materials) {
+    prepare_materials(scene);
+  }
+
   std::filesystem::path mtl_path;
   if (has_materials) {
     mtl_path = output_path;
@@ -34,7 +37,6 @@ bool ObjEncoder::encode(const Scene& scene, const std::filesystem::path& output_
 
   std::ofstream out(output_path, std::ios::out | std::ios::binary);
 
-  // Write mtllib reference
   if (has_materials) {
     out << "mtllib " << mtl_path.filename().string() << "\n";
     out << "\n";
@@ -53,31 +55,26 @@ bool ObjEncoder::encode(const Scene& scene, const std::filesystem::path& output_
     bool has_normals = mesh->has_attribute(VertexAttribute::Normal);
     bool has_texcoords = mesh->has_attribute(VertexAttribute::TexCoord0);
 
-    // Write positions
     for (const auto& p : mesh->positions()) {
       out << "v " << p.x << " " << p.y << " " << p.z << "\n";
     }
 
-    // Write texture coordinates
     if (has_texcoords) {
       for (const auto& t : mesh->texcoords0()) {
         out << "vt " << t.x << " " << t.y << "\n";
       }
     }
 
-    // Write normals
     if (has_normals) {
       for (const auto& n : mesh->normals()) {
         out << "vn " << n.x << " " << n.y << " " << n.z << "\n";
       }
     }
 
-    // Write usemtl if this mesh has a material
     if (mesh->material()) {
       out << "usemtl " << mesh->material()->name() << "\n";
     }
 
-    // Write faces
     for (const auto& tri : mesh->triangles()) {
       out << "f";
       for (int i = 0; i < 3; ++i) {

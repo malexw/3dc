@@ -22,12 +22,11 @@ Vec3f compute_normal(const std::vector<Vec3f>& positions,
   return normal;
 }
 
-// Project a 3D point to 2D by dropping the axis most aligned with the normal.
-// Returns {u, v} as a pair of floats.
 struct Vec2 {
   float u, v;
 };
 
+// Project a 3D point to 2D by dropping the axis most aligned with the face normal
 Vec2 project(const Vec3f& p, int drop_axis) {
   switch (drop_axis) {
     case 0: return {p.y, p.z};  // drop X
@@ -41,7 +40,7 @@ float cross2d(const Vec2& a, const Vec2& b, const Vec2& c) {
   return (b.u - a.u) * (c.v - a.v) - (b.v - a.v) * (c.u - a.u);
 }
 
-// Test if point p is strictly inside triangle (a, b, c) using sign-of-cross.
+// Test if point p is inside triangle (a, b, c), boundary inclusive.
 bool point_in_triangle(const Vec2& p, const Vec2& a, const Vec2& b,
                        const Vec2& c) {
   float d1 = cross2d(a, b, p);
@@ -69,7 +68,6 @@ std::vector<std::array<int, 3>> triangulate_polygon(
     return triangles;
   }
 
-  // Compute face normal via Newell's method.
   Vec3f normal = compute_normal(positions, polygon);
 
   // Choose which axis to drop: the one with the largest absolute normal component.
@@ -83,7 +81,6 @@ std::vector<std::array<int, 3>> triangulate_polygon(
     drop_axis = 1;
   }
 
-  // Project all polygon vertices to 2D.
   std::vector<Vec2> pts(n);
   for (int i = 0; i < n; ++i) {
     pts[i] = project(positions[polygon[i]], drop_axis);
@@ -98,13 +95,12 @@ std::vector<std::array<int, 3>> triangulate_polygon(
   }
   float winding = (signed_area >= 0.0f) ? 1.0f : -1.0f;
 
-  // Build a working list of vertex indices (indices into the polygon array).
+  // Working list of indices into the polygon array (not into positions)
   std::list<int> remaining;
   for (int i = 0; i < n; ++i) {
     remaining.push_back(i);
   }
 
-  // Ear clipping loop.
   int stall_count = 0;
   int max_stall = remaining.size();
 
@@ -142,20 +138,17 @@ std::vector<std::array<int, 3>> triangulate_polygon(
       }
     }
 
-    // Advance to next vertex.
     ++it;
     if (it == remaining.end()) it = remaining.begin();
     ++stall_count;
   }
 
-  // Emit the last triangle (or fall back for degenerate cases).
   if (remaining.size() == 3) {
     auto a = remaining.begin();
     auto b = std::next(a);
     auto c = std::next(b);
     triangles.push_back({*a, *b, *c});
   } else {
-    // Degenerate polygon — fall back to fan triangulation.
     std::cout << "Warning: degenerate polygon with " << n
               << " vertices, falling back to fan triangulation" << std::endl;
     triangles.clear();

@@ -95,7 +95,6 @@ bool StlbEncoder::encode_mesh(const Mesh& mesh, const std::filesystem::path& out
         write_float_le(out, 0.0f);
       }
 
-      // Write 3 vertices
       write_vec3f_le(out, positions[tri[0]]);
       write_vec3f_le(out, positions[tri[1]]);
       write_vec3f_le(out, positions[tri[2]]);

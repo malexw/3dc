@@ -32,7 +32,6 @@ Scene::ShPtr ObjDecoder::decode(const std::vector<char>& b,
   std::vector<Vec3f> tmp_normals;
   std::vector<Vec2f> tmp_texcoords;
 
-  // Material library: name -> Material
   std::map<std::string, Material::ShPtr> materials;
 
   // Per-material mesh building state
@@ -72,7 +71,6 @@ Scene::ShPtr ObjDecoder::decode(const std::vector<char>& b,
     if (tokens[0] == "#" || tokens[0].empty()) {
       // comment or blank line — skip
     } else if (tokens[0] == "mtllib" && tokens.size() >= 2) {
-      // Load material library file
       auto mtl_path = source_path.parent_path() / tokens[1];
       std::ifstream mtl_file(mtl_path, std::ios::binary | std::ios::ate);
       if (mtl_file.is_open()) {
@@ -103,7 +101,6 @@ Scene::ShPtr ObjDecoder::decode(const std::vector<char>& b,
     } else if (tokens[0] == "f" && tokens.size() >= 4) {
       auto& mb = get_builder(current_material);
 
-      // Helper to get or create a unified vertex index within this builder
       auto get_vertex_index = [&](int pi, int ni, int ti) -> uint32_t {
         auto key = std::make_tuple(pi, ni, ti);
         auto it = mb.vertex_map.find(key);
@@ -163,7 +160,6 @@ Scene::ShPtr ObjDecoder::decode(const std::vector<char>& b,
       if (face_verts == 3) {
         mb.mesh->add_triangle(face_indices[0], face_indices[1], face_indices[2]);
       } else {
-        // Ear clipping triangulation for 4+ vertex polygons.
         auto tris = triangulate_polygon(tmp_positions, face_pos_indices);
         for (const auto& tri : tris) {
           mb.mesh->add_triangle(face_indices[tri[0]],
@@ -176,10 +172,9 @@ Scene::ShPtr ObjDecoder::decode(const std::vector<char>& b,
     index = newline_index(b, index + 1);
   }
 
-  // Build scene from mesh builders
   auto scene = std::make_shared<Scene>();
 
-  // Add all referenced materials to the scene
+  // Only materials referenced by a face make it into the scene
   std::set<std::string> added_materials;
   for (const auto& mat_name : builder_order) {
     if (!mat_name.empty() && added_materials.find(mat_name) == added_materials.end()) {
@@ -202,7 +197,6 @@ Scene::ShPtr ObjDecoder::decode(const std::vector<char>& b,
       mb.mesh->set_texcoords0(std::move(mb.out_texcoords));
     }
 
-    // Assign material to mesh
     if (!mat_name.empty()) {
       auto it = materials.find(mat_name);
       if (it != materials.end()) {
@@ -319,7 +313,6 @@ std::string ObjDecoder::parse_texture_map(
 
   if (tokens.empty()) return "";
 
-  // Check for texture options (tokens starting with '-')
   bool has_options = false;
   for (size_t i = 0; i + 1 < tokens.size(); ++i) {
     if (!tokens[i].empty() && tokens[i][0] == '-') {
@@ -337,7 +330,6 @@ std::string ObjDecoder::parse_texture_map(
   return tokens.back();
 }
 
-// Returns the index of the first character following a group of newline characters after the offset
 unsigned int ObjDecoder::newline_index(const std::vector<char>& b, int offset) {
 
   int ni = offset;
@@ -352,13 +344,10 @@ unsigned int ObjDecoder::newline_index(const std::vector<char>& b, int offset) {
   return ni;
 }
 
-// Returns true if c is a whitespace character
 bool ObjDecoder::is_whitespace(char c) {
   return (c == ' ') || (c == '\t') || (c == '\n') || (c == '\r');
 }
 
-// Returns a collection of whitespace-separated character strings occuring between offset and the end of the
-// line. Unlike the old version, '/' is NOT treated as a delimiter — it's kept as part of face vertex tokens.
 std::vector<std::string> ObjDecoder::Tokenize(const std::vector<char>& b, int offset) {
 
   std::vector<std::string> tokens;

@@ -5,6 +5,7 @@ set(LIB_SOURCES
   src/scene.cc src/node.cc src/mesh.cc src/material.cc
   src/material_convert.cc src/transform.cc src/triangulate.cc
   src/vec2f.cc src/vec3f.cc
+  src/codec/encoder.cc
   src/codec/obj/objdecoder.cc src/codec/obj/objencoder.cc
   src/codec/stl/stldecoder.cc src/codec/stl/stlencoder.cc
   src/codec/stlb/stlbdecoder.cc src/codec/stlb/stlbencoder.cc

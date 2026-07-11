@@ -20,11 +20,13 @@ class ObjEncoder : public Encoder {
   ~ObjEncoder();
   bool encode(const Scene& scene, const std::filesystem::path& output_path) override;
 
+  // MTL can express both Blinn-Phong and PBR (extension) properties.
+  bool supports_blinn_phong_materials() const override { return true; }
+  bool supports_pbr_materials() const override { return true; }
+
  private:
-  // Write a .mtl file for all materials in the scene
   bool encode_mtl(const Scene& scene, const std::filesystem::path& mtl_path);
 
-  // Write a Vec3f material property
   void write_vec3f(std::ostream& out, const std::string& keyword, const Vec3f& v);
 
   ObjEncoder(const ObjEncoder&) = delete;
